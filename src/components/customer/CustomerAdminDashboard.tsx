@@ -54,21 +54,6 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({ onNavig
               </button>
             </div>
           </div>
-
-          {/* Navigation to Rental Ready Admin */}
-          <div className="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-medium text-green-900">Need to Set Up Rental Ready Checklists?</h3>
-                <p className="text-sm text-green-700">Manage inspection questions and rental ready templates</p>
-              </div>
-              <button onClick={onNavigateToRentalReady} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
-                <Settings className="w-4 h-4" />
-                Rental Ready Admin <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-          </>
         );
     }
   };

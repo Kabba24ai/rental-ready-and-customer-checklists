@@ -53,29 +53,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateToCustomerAdm
                 Manage Templates
               </button>
             </div>
-            
-            {/* Helper Text */}
-            <div className="md:col-span-2 bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-              <p className="text-blue-800 text-center">
-                <strong>Getting Started:</strong> Start by creating a new template from existing questions & answers or create a new set of questions & answers and then add them into your template
-              </p>
-            </div>
           </div>
-          
-          {/* Navigation to Customer Admin */}
-          <div className="mt-6 bg-purple-50 border border-purple-200 rounded-lg p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-medium text-purple-900">Ready for Customer Checklists?</h3>
-                <p className="text-sm text-purple-700">Set up delivery and return checklists for customers</p>
-              </div>
-              <button onClick={onNavigateToCustomerAdmin} className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
-                <Users className="w-4 h-4" />
-                Customer Admin <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-          </>
         );
     }
   };
