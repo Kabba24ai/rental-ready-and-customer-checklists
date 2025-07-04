@@ -193,12 +193,14 @@ function App() {
   if (currentView === 'admin') {
     return <AdminDashboard 
       onNavigateToCustomerAdmin={() => setCurrentView('customer-admin')}
+      onNavigateToChecklistMaster={() => setCurrentView('checklist-master')}
     />;
   }
 
   if (currentView === 'customer-admin') {
     return <CustomerAdminDashboard 
       onNavigateToRentalReady={() => setCurrentView('admin')}
+      onNavigateToChecklistMaster={() => setCurrentView('checklist-master')}
     />;
   }
 

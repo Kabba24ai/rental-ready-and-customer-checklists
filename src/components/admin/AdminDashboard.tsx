@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { Settings, Database, FileText, Plus, Search, Users, ArrowRight } from 'lucide-react';
+import { Settings, Database, FileText, Plus, Search, Users, ArrowRight, ClipboardList } from 'lucide-react';
 import QuestionManager from './QuestionManager';
 import ChecklistTemplateManager from './ChecklistTemplateManager';
 
 interface AdminDashboardProps {
   onNavigateToCustomerAdmin?: () => void;
+  onNavigateToChecklistMaster?: () => void;
 }
 
 type AdminView = 'overview' | 'questions' | 'templates';
 
-const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateToCustomerAdmin }) => {
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateToCustomerAdmin, onNavigateToChecklistMaster }) => {
   const [currentView, setCurrentView] = useState<AdminView>('overview');
 
   const renderContent = () => {
@@ -106,6 +107,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateToCustomerAdm
                 </button>
               </nav>
               <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-200">
+                <button
+                  onClick={onNavigateToChecklistMaster}
+                  className="flex items-center gap-2 px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors text-sm font-medium"
+                  title="Go to Checklist Master Dashboard"
+                >
+                  <ClipboardList className="w-4 h-4" />
+                  Checklist Master
+                </button>
                 <button
                   onClick={onNavigateToCustomerAdmin}
                   className="flex items-center gap-2 px-3 py-2 text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-lg transition-colors text-sm font-medium"
