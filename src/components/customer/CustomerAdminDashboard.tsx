@@ -124,7 +124,6 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({ onNavig
                   <div className="flex items-center gap-1">
                     <Settings className="w-4 h-4" />
                   </div>
-                </div>
                 </button>
               </nav>
             </div>
