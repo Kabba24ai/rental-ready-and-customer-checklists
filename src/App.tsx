@@ -14,8 +14,7 @@ import React, { useState, useEffect } from 'react';
  * 
  * Views:
  * - checklist: Main rental ready inspection interface
- * - admin: Master checklist system management
- * - rental-ready-admin: Rental ready administrative management
+ * - admin: Administrative management dashboard
  * - customer-admin: Customer checklist management
  * - customer-delivery: Customer delivery checklist
  * - customer-return: Customer return checklist
@@ -33,9 +32,9 @@ import ChecklistForm from './components/ChecklistForm';
 import AdminDashboard from './components/admin/AdminDashboard';
 import CustomerAdminDashboard from './components/customer/CustomerAdminDashboard';
 import CustomerDeliveryChecklist from './components/customer/CustomerDeliveryChecklist';
-import { ClipboardList, Settings, Users, Truck, Package, Database } from 'lucide-react';
+import { ClipboardList, Settings, Users, Truck, Package } from 'lucide-react';
 
-type AppView = 'checklist' | 'admin' | 'rental-ready-admin' | 'customer-admin' | 'customer-delivery' | 'customer-return';
+type AppView = 'checklist' | 'admin' | 'customer-admin' | 'customer-delivery' | 'customer-return';
 
 function App() {
   const [currentView, setCurrentView] = useState<AppView>('checklist');
@@ -154,73 +153,8 @@ function App() {
     return <AdminDashboard />;
   }
 
-  if (currentView === 'rental-ready-admin') {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="bg-white shadow-sm border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center gap-3">
-                <Settings className="w-8 h-8 text-blue-600" />
-                <div>
-                  <h1 className="text-xl font-semibold text-gray-900">Rental Ready Admin</h1>
-                  <p className="text-sm text-gray-600">Rental Ready Checklist Management</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => setCurrentView('checklist')}
-                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <ClipboardList className="w-4 h-4" />
-                  <span className="text-sm font-medium">Back to Main</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Rental Ready Admin Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <AdminDashboard />
-        </div>
-      </div>
-    );
-  }
   if (currentView === 'customer-admin') {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="bg-white shadow-sm border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center gap-3">
-                <Users className="w-8 h-8 text-purple-600" />
-                <div>
-                  <h1 className="text-xl font-semibold text-gray-900">Customer Checklist Admin</h1>
-                  <p className="text-sm text-gray-600">Customer Delivery & Return Management</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => setCurrentView('checklist')}
-                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <ClipboardList className="w-4 h-4" />
-                  <span className="text-sm font-medium">Back to Main</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Customer Admin Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <CustomerAdminDashboard />
-        </div>
-      </div>
-    );
+    return <CustomerAdminDashboard />;
   }
 
   if (currentView === 'customer-delivery') {
@@ -322,21 +256,14 @@ function App() {
                 <span className="text-sm font-medium">Customer Return</span>
               </button>
               <button
-                onClick={() => setCurrentView('admin')}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <Database className="w-4 h-4" />
-                <span className="text-sm font-medium">Checklist Systems</span>
-              </button>
-              <button
                 onClick={() => setCurrentView('customer-admin')}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-colors"
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <Users className="w-4 h-4" />
                 <span className="text-sm font-medium">Customer Admin</span>
               </button>
               <button
-                onClick={() => setCurrentView('rental-ready-admin')}
+                onClick={() => setCurrentView('admin')}
                 className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <Settings className="w-4 h-4" />

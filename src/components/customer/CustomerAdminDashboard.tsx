@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Database, FileText } from 'lucide-react';
+import { Settings, Database, FileText, Users } from 'lucide-react';
 import CustomerQuestionManager from './CustomerQuestionManager';
 import CustomerChecklistTemplateManager from './CustomerChecklistTemplateManager';
 
@@ -54,55 +54,59 @@ const CustomerAdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">Customer Checklist Management</h2>
-          <p className="text-gray-600">Manage delivery/return checklists with cost calculations</p>
+      <div className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-3">
+              <Users className="w-8 h-8 text-purple-600" />
+              <div>
+                <h1 className="text-xl font-semibold text-gray-900">Customer Checklist Admin</h1>
+                <p className="text-sm text-gray-600">Delivery & Return Checklist Management</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <nav className="flex gap-1">
+                <button
+                  onClick={() => setCurrentView('overview')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentView === 'overview'
+                      ? 'bg-purple-100 text-purple-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  Overview
+                </button>
+                <button
+                  onClick={() => setCurrentView('questions')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentView === 'questions'
+                      ? 'bg-purple-100 text-purple-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  Questions & Categories
+                </button>
+                <button
+                  onClick={() => setCurrentView('templates')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentView === 'templates'
+                      ? 'bg-purple-100 text-purple-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  Templates
+                </button>
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-        <div className="border-b border-gray-200">
-          <nav className="flex">
-            <button
-              onClick={() => setCurrentView('overview')}
-              className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
-                currentView === 'overview'
-                  ? 'border-purple-500 text-purple-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Overview
-            </button>
-            <button
-              onClick={() => setCurrentView('questions')}
-              className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
-                currentView === 'questions'
-                  ? 'border-purple-500 text-purple-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Customer Questions & Categories
-            </button>
-            <button
-              onClick={() => setCurrentView('templates')}
-              className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
-                currentView === 'templates'
-                  ? 'border-purple-500 text-purple-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Customer Templates
-            </button>
-          </nav>
-        </div>
-        
-        <div className="p-6">
-          {renderContent()}
-        </div>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {renderContent()}
       </div>
     </div>
   );

@@ -1,70 +1,51 @@
 import React, { useState } from 'react';
-import { Database, FileText, Package } from 'lucide-react';
+import { Settings, Database, FileText, Plus, Search } from 'lucide-react';
 import QuestionManager from './QuestionManager';
 import ChecklistTemplateManager from './ChecklistTemplateManager';
-import ChecklistSystemManager from './ChecklistSystemManager';
 
-type AdminView = 'overview' | 'systems' | 'questions' | 'templates';
+type AdminView = 'overview' | 'questions' | 'templates';
 
 const AdminDashboard: React.FC = () => {
   const [currentView, setCurrentView] = useState<AdminView>('overview');
 
   const renderContent = () => {
     switch (currentView) {
-      case 'systems':
-        return <ChecklistSystemManager />;
       case 'questions':
         return <QuestionManager />;
       case 'templates':
         return <ChecklistTemplateManager />;
       default:
         return (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Package className="w-8 h-8 text-blue-600" />
-                <h3 className="text-lg font-semibold text-gray-900">Checklist Systems</h3>
-              </div>
-              <p className="text-gray-600 mb-4">
-                Manage unified checklist systems that combine Rental Ready and Customer Checklists for equipment categories.
-              </p>
-              <button
-                onClick={() => setCurrentView('systems')}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-              >
-                Manage Checklist Systems
-              </button>
-            </div>
-
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <div className="flex items-center gap-3 mb-4">
                 <Database className="w-8 h-8 text-blue-600" />
-                <h3 className="text-lg font-semibold text-gray-900">Rental Ready Questions</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Question & Categories Mgt</h3>
               </div>
               <p className="text-gray-600 mb-4">
-                Create and manage rental ready inspection questions organized by categories with status mappings.
+                Create and manage inspection questions organized by categories. Define answer options with status mappings.
               </p>
               <button
                 onClick={() => setCurrentView('questions')}
-                className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
               >
-                Manage Rental Ready Questions
+                Manage Questions & Categories
               </button>
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <div className="flex items-center gap-3 mb-4">
-                <FileText className="w-8 h-8 text-purple-600" />
-                <h3 className="text-lg font-semibold text-gray-900">Rental Ready Templates</h3>
+                <FileText className="w-8 h-8 text-green-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Checklist Templates</h3>
               </div>
               <p className="text-gray-600 mb-4">
-                Build custom rental ready checklist templates by selecting and ordering questions for equipment categories.
+                Build custom checklist templates by selecting and ordering questions for different equipment categories.
               </p>
               <button
                 onClick={() => setCurrentView('templates')}
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
               >
-                Manage Rental Ready Templates
+                Manage Templates
               </button>
             </div>
           </div>
@@ -73,65 +54,59 @@ const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">Master Checklist System</h2>
-          <p className="text-gray-600">Unified management of Rental Ready and Customer Checklist systems</p>
+      <div className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-3">
+              <Settings className="w-8 h-8 text-blue-600" />
+              <div>
+                <h1 className="text-xl font-semibold text-gray-900">Admin Dashboard</h1>
+                <p className="text-sm text-gray-600">Checklist Management System</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <nav className="flex gap-1">
+                <button
+                  onClick={() => setCurrentView('overview')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentView === 'overview'
+                      ? 'bg-blue-100 text-blue-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  Overview
+                </button>
+                <button
+                  onClick={() => setCurrentView('questions')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentView === 'questions'
+                      ? 'bg-blue-100 text-blue-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  Questions & Categories
+                </button>
+                <button
+                  onClick={() => setCurrentView('templates')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentView === 'templates'
+                      ? 'bg-blue-100 text-blue-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  Templates
+                </button>
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-        <div className="border-b border-gray-200">
-          <nav className="flex">
-            <button
-              onClick={() => setCurrentView('overview')}
-              className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
-                currentView === 'overview'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Overview
-            </button>
-            <button
-              onClick={() => setCurrentView('systems')}
-              className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
-                currentView === 'systems'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Checklist Systems
-            </button>
-            <button
-              onClick={() => setCurrentView('questions')}
-              className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
-                currentView === 'questions'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Rental Ready Questions
-            </button>
-            <button
-              onClick={() => setCurrentView('templates')}
-              className={`px-6 py-4 text-sm font-medium border-b-2 transition-colors ${
-                currentView === 'templates'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Rental Ready Templates
-            </button>
-          </nav>
-        </div>
-        
-        <div className="p-6">
-          {renderContent()}
-        </div>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {renderContent()}
       </div>
     </div>
   );
