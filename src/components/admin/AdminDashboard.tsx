@@ -48,6 +48,13 @@ const AdminDashboard: React.FC = () => {
                 Manage Templates
               </button>
             </div>
+            
+            {/* Helper Text */}
+            <div className="md:col-span-2 bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+              <p className="text-blue-800 text-center">
+                <strong>Getting Started:</strong> Start by creating a new template from existing questions & answers or create a new set of questions & answers and then add them into your template
+              </p>
+            </div>
           </div>
         );
     }
