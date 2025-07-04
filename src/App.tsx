@@ -156,6 +156,14 @@ function App() {
     setCurrentView('admin');
   };
 
+  const handleNavigateToRentalReady = () => {
+    setCurrentView('admin');
+  };
+
+  const handleNavigateToCustomerAdmin = () => {
+    setCurrentView('customer-admin');
+  };
+
   const handleCustomerChecklistComplete = (responses: any[], totalCost: number) => {
     console.log('Customer checklist completed:', { responses, totalCost });
     setShowSuccess(true);
@@ -167,6 +175,8 @@ function App() {
       <ChecklistMasterDashboard
         onCreateNew={() => setCurrentView('create-checklist-master')}
         onEditSystem={handleEditChecklistMaster}
+        onNavigateToRentalReady={handleNavigateToRentalReady}
+        onNavigateToCustomerAdmin={handleNavigateToCustomerAdmin}
       />
     );
   }

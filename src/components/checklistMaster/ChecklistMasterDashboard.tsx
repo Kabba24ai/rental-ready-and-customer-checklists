@@ -8,11 +8,15 @@ import { mockCustomerChecklistTemplates } from '../../data/customerAdminMockData
 interface ChecklistMasterDashboardProps {
   onCreateNew: () => void;
   onEditSystem: (systemId: string) => void;
+  onNavigateToRentalReady: () => void;
+  onNavigateToCustomerAdmin: () => void;
 }
 
 const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
   onCreateNew,
-  onEditSystem
+  onEditSystem,
+  onNavigateToRentalReady,
+  onNavigateToCustomerAdmin
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [successMessage, setSuccessMessage] = useState<string>('');
@@ -155,20 +159,28 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center gap-2">
-                          <Settings className="w-4 h-4 text-green-500" />
+                        <button
+                          onClick={onNavigateToRentalReady}
+                          className="flex items-center gap-2 hover:bg-green-50 p-2 rounded-lg transition-colors group"
+                          title="Go to Rental Ready Admin Dashboard"
+                        >
+                          <Settings className="w-4 h-4 text-green-500 group-hover:text-green-600" />
                           <span className="text-sm text-gray-900">
                             {system.rentalReadyQuestionCount} questions
                           </span>
-                        </div>
+                        </button>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center gap-2">
-                          <ClipboardList className="w-4 h-4 text-purple-500" />
+                        <button
+                          onClick={onNavigateToCustomerAdmin}
+                          className="flex items-center gap-2 hover:bg-purple-50 p-2 rounded-lg transition-colors group"
+                          title="Go to Customer Checklist Admin Dashboard"
+                        >
+                          <ClipboardList className="w-4 h-4 text-purple-500 group-hover:text-purple-600" />
                           <span className="text-sm text-gray-900">
                             {system.customerQuestionCount} questions
                           </span>
-                        </div>
+                        </button>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex items-center gap-2">
