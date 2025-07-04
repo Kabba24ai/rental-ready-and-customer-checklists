@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Settings, Database, FileText, Package } from 'lucide-react';
+import { Settings, Database, FileText } from 'lucide-react';
 import QuestionManager from './QuestionManager';
 import ChecklistTemplateManager from './ChecklistTemplateManager';
-import ChecklistSystemManager from './ChecklistSystemManager';
 
-type AdminView = 'overview' | 'questions' | 'templates' | 'systems';
+type AdminView = 'overview' | 'questions' | 'templates';
 
 const AdminDashboard: React.FC = () => {
   const [currentView, setCurrentView] = useState<AdminView>('overview');
@@ -15,11 +14,9 @@ const AdminDashboard: React.FC = () => {
         return <QuestionManager />;
       case 'templates':
         return <ChecklistTemplateManager />;
-      case 'systems':
-        return <ChecklistSystemManager />;
       default:
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <div className="flex items-center gap-3 mb-4">
                 <Database className="w-8 h-8 text-blue-600" />
@@ -49,22 +46,6 @@ const AdminDashboard: React.FC = () => {
                 className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
               >
                 Manage Templates
-              </button>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <Package className="w-8 h-8 text-purple-600" />
-                <h3 className="text-lg font-semibold text-gray-900">Checklist Systems</h3>
-              </div>
-              <p className="text-gray-600 mb-4">
-                Create unified checklist systems that combine Rental Ready and Customer Checklists for equipment assignment.
-              </p>
-              <button
-                onClick={() => setCurrentView('systems')}
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-              >
-                Manage Checklist Systems
               </button>
             </div>
           </div>
@@ -118,17 +99,7 @@ const AdminDashboard: React.FC = () => {
                   Templates
                 </button>
               </nav>
-            <button
-              onClick={() => setCurrentView('systems')}
-              className={`px-3 py-2 rounded-lg text-sm font-medium border-b-2 transition-colors ${
-                currentView === 'systems'
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Checklist Systems
-            </button>
-            </nav>
+            </div>
           </div>
         </div>
       </div>
