@@ -32,17 +32,20 @@ import ChecklistForm from './components/ChecklistForm';
 import AdminDashboard from './components/admin/AdminDashboard';
 import CustomerAdminDashboard from './components/customer/CustomerAdminDashboard';
 import CustomerDeliveryChecklist from './components/customer/CustomerDeliveryChecklist';
+import ChecklistMasterDashboard from './components/checklistMaster/ChecklistMasterDashboard';
+import CreateChecklistMasterForm from './components/checklistMaster/CreateChecklistMasterForm';
 import { ClipboardList, Settings, Users, Truck, Package } from 'lucide-react';
 
-type AppView = 'checklist' | 'admin' | 'customer-admin' | 'customer-delivery' | 'customer-return';
+type AppView = 'checklist' | 'admin' | 'customer-admin' | 'customer-delivery' | 'customer-return' | 'checklist-master' | 'create-checklist-master';
 
 function App() {
-  const [currentView, setCurrentView] = useState<AppView>('checklist');
+  const [currentView, setCurrentView] = useState<AppView>('checklist-master');
   const [equipment, setEquipment] = useState<Equipment[]>(mockEquipment);
   const [selectedEquipment, setSelectedEquipment] = useState<Equipment | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [checklist, setChecklist] = useState<RentalReadyChecklist | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [currentChecklistMasterName, setCurrentChecklistMasterName] = useState('');
 
   useEffect(() => {
     if (selectedEquipment) {
@@ -143,11 +146,39 @@ function App() {
     setTimeout(() => setShowSuccess(false), 3000);
   };
 
+  const handleCreateChecklistMaster = (name: string, equipmentCategory: string) => {
+    setCurrentChecklistMasterName(name);
+    setCurrentView('admin');
+  };
+
+  const handleEditChecklistMaster = (systemId: string) => {
+    // For now, just go to admin view
+    setCurrentView('admin');
+  };
+
   const handleCustomerChecklistComplete = (responses: any[], totalCost: number) => {
     console.log('Customer checklist completed:', { responses, totalCost });
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 3000);
   };
+
+  if (currentView === 'checklist-master') {
+    return (
+      <ChecklistMasterDashboard
+        onCreateNew={() => setCurrentView('create-checklist-master')}
+        onEditSystem={handleEditChecklistMaster}
+      />
+    );
+  }
+
+  if (currentView === 'create-checklist-master') {
+    return (
+      <CreateChecklistMasterForm
+        onSave={handleCreateChecklistMaster}
+        onCancel={() => setCurrentView('checklist-master')}
+      />
+    );
+  }
 
   if (currentView === 'admin') {
     return <AdminDashboard />;
@@ -268,6 +299,13 @@ function App() {
               >
                 <Settings className="w-4 h-4" />
                 <span className="text-sm font-medium">Rental Ready Admin</span>
+              </button>
+              <button
+                onClick={() => setCurrentView('checklist-master')}
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <ClipboardList className="w-4 h-4" />
+                <span className="text-sm font-medium">Checklist Master</span>
               </button>
               <div className="flex items-center gap-2">
                 <Settings className="w-5 h-5 text-gray-400" />
