@@ -34,9 +34,10 @@ import CustomerAdminDashboard from './components/customer/CustomerAdminDashboard
 import CustomerDeliveryChecklist from './components/customer/CustomerDeliveryChecklist';
 import ChecklistMasterDashboard from './components/checklistMaster/ChecklistMasterDashboard';
 import CreateChecklistMasterForm from './components/checklistMaster/CreateChecklistMasterForm';
+import EditChecklistMasterForm from './components/checklistMaster/EditChecklistMasterForm';
 import { ClipboardList, Settings, Users, Truck, Package } from 'lucide-react';
 
-type AppView = 'checklist' | 'admin' | 'customer-admin' | 'customer-delivery' | 'customer-return' | 'checklist-master' | 'create-checklist-master' | 'rental-ready';
+type AppView = 'checklist' | 'admin' | 'customer-admin' | 'customer-delivery' | 'customer-return' | 'checklist-master' | 'create-checklist-master' | 'edit-checklist-master' | 'rental-ready';
 
 function App() {
   const [currentView, setCurrentView] = useState<AppView>('rental-ready');
@@ -46,6 +47,7 @@ function App() {
   const [checklist, setChecklist] = useState<RentalReadyChecklist | null>(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [currentChecklistMasterName, setCurrentChecklistMasterName] = useState('');
+  const [editingSystemId, setEditingSystemId] = useState<string>('');
 
   useEffect(() => {
     if (selectedEquipment) {
@@ -152,8 +154,14 @@ function App() {
   };
 
   const handleEditChecklistMaster = (systemId: string) => {
-    // For now, just go to admin view
-    setCurrentView('admin');
+    setEditingSystemId(systemId);
+    setCurrentView('edit-checklist-master');
+  };
+
+  const handleUpdateChecklistMaster = (name: string) => {
+    // In a real app, this would update the system name in the database
+    console.log('Updating system', editingSystemId, 'to name:', name);
+    setCurrentView('checklist-master');
   };
 
   const handleNavigateToRentalReady = () => {
@@ -185,6 +193,16 @@ function App() {
     return (
       <CreateChecklistMasterForm
         onSave={handleCreateChecklistMaster}
+        onCancel={() => setCurrentView('checklist-master')}
+      />
+    );
+  }
+
+  if (currentView === 'edit-checklist-master') {
+    return (
+      <EditChecklistMasterForm
+        systemId={editingSystemId}
+        onSave={handleUpdateChecklistMaster}
         onCancel={() => setCurrentView('checklist-master')}
       />
     );
@@ -305,6 +323,7 @@ function App() {
     return <AdminDashboard 
       onNavigateToCustomerAdmin={() => setCurrentView('customer-admin')}
       onNavigateToChecklistMaster={() => setCurrentView('checklist-master')}
+      onNavigateToRentalReady={() => setCurrentView('rental-ready')}
     />;
   }
 
@@ -422,7 +441,7 @@ function App() {
               </button>
               <button
                 onClick={() => setCurrentView('rental-ready')}
-                className="flex items-center gap-2 px-3 py-2 text-green-600 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
               >
                 <ClipboardList className="w-4 h-4" />
                 <span className="text-sm font-medium">Rental Ready Mgt.</span>

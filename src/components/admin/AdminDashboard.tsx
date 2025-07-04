@@ -6,11 +6,12 @@ import ChecklistTemplateManager from './ChecklistTemplateManager';
 interface AdminDashboardProps {
   onNavigateToCustomerAdmin?: () => void;
   onNavigateToChecklistMaster?: () => void;
+  onNavigateToRentalReady?: () => void;
 }
 
 type AdminView = 'overview' | 'questions' | 'templates';
 
-const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateToCustomerAdmin, onNavigateToChecklistMaster }) => {
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateToCustomerAdmin, onNavigateToChecklistMaster, onNavigateToRentalReady }) => {
   const [currentView, setCurrentView] = useState<AdminView>('overview');
 
   const renderContent = () => {
@@ -115,6 +116,14 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateToCustomerAdm
                 >
                   <ClipboardList className="w-4 h-4" />
                   Checklist Master
+                </button>
+                <button
+                  onClick={onNavigateToRentalReady}
+                  className="flex items-center gap-2 px-3 py-2 text-green-600 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors text-sm font-medium"
+                  title="Go to Rental Ready Management"
+                >
+                  <ClipboardList className="w-4 h-4" />
+                  Rental Ready Mgt.
                 </button>
                 <button
                   onClick={onNavigateToCustomerAdmin}

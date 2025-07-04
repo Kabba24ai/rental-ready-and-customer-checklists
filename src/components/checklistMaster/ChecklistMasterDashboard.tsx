@@ -160,9 +160,9 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <button
-                          onClick={onNavigateToRentalReady}
+                          onClick={() => onEditSystem(system.id)}
                           className="flex items-center gap-2 hover:bg-blue-50 p-2 rounded-lg transition-colors group"
-                          title="Go to Rental Ready Admin Dashboard"
+                          title="Edit Rental Ready Questions"
                         >
                           <ClipboardList className="w-4 h-4 text-blue-500 group-hover:text-blue-600" />
                           <span className="text-sm text-gray-900">
@@ -172,9 +172,9 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <button
-                          onClick={onNavigateToCustomerAdmin}
+                          onClick={() => onEditSystem(system.id)}
                           className="flex items-center gap-2 hover:bg-purple-50 p-2 rounded-lg transition-colors group"
-                          title="Go to Customer Checklist Admin Dashboard"
+                          title="Edit Customer Questions"
                         >
                           <ClipboardList className="w-4 h-4 text-purple-500 group-hover:text-purple-600" />
                           <span className="text-sm text-gray-900">
