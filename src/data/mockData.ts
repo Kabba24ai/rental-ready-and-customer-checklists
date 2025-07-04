@@ -319,5 +319,3 @@ export const getChecklistTemplate = (category: string): ChecklistItem[] => {
 
   return baseItems;
 }
-/**
-};
