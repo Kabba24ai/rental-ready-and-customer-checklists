@@ -161,10 +161,10 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                       <td className="px-6 py-4 whitespace-nowrap">
                         <button
                           onClick={onNavigateToRentalReady}
-                          className="flex items-center gap-2 hover:bg-green-50 p-2 rounded-lg transition-colors group"
+                          className="flex items-center gap-2 hover:bg-blue-50 p-2 rounded-lg transition-colors group"
                           title="Go to Rental Ready Admin Dashboard"
                         >
-                          <Settings className="w-4 h-4 text-green-500 group-hover:text-green-600" />
+                          <ClipboardList className="w-4 h-4 text-blue-500 group-hover:text-blue-600" />
                           <span className="text-sm text-gray-900">
                             {system.rentalReadyQuestionCount} questions
                           </span>

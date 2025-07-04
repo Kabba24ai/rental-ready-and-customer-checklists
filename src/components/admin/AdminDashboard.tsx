@@ -57,7 +57,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateToCustomerAdm
           </div>
           </>
         );
-    }
+    setCurrentView('admin');
   };
 
   return (
