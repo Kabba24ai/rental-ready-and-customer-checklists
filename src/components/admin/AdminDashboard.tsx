@@ -118,7 +118,6 @@ const AdminDashboard: React.FC = () => {
                   Templates
                 </button>
               </nav>
-            </button>
             <button
               onClick={() => setCurrentView('systems')}
               className={`px-3 py-2 rounded-lg text-sm font-medium border-b-2 transition-colors ${
