@@ -165,7 +165,7 @@ function App() {
   };
 
   const handleNavigateToRentalReady = () => {
-    setCurrentView('rental-ready');
+    setCurrentView('admin');
   };
 
   const handleNavigateToCustomerAdmin = () => {
