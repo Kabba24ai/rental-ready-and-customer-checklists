@@ -54,6 +54,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateToCustomerAdm
               </button>
             </div>
           </div>
+          </>
         );
     }
   };
@@ -128,7 +129,3 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateToCustomerAdm
 };
 
 export default AdminDashboard;
-        )
-    }
-  }
-}
