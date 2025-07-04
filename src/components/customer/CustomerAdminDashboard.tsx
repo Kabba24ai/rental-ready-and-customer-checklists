@@ -20,7 +20,6 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({ onNavig
         return <CustomerChecklistTemplateManager />;
       default:
         return (
-          <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <div className="flex items-center gap-3 mb-4">
@@ -128,7 +127,3 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({ onNavig
 };
 
 export default CustomerAdminDashboard;
-        )
-    }
-  }
-}
