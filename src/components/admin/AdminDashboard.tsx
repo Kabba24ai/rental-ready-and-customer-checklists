@@ -69,8 +69,8 @@ const AdminDashboard: React.FC = () => {
             <div className="flex items-center gap-3">
               <Settings className="w-8 h-8 text-blue-600" />
               <div>
-                <h1 className="text-xl font-semibold text-gray-900">Admin Dashboard</h1>
-                <p className="text-sm text-gray-600">Checklist Management System</p>
+                <h1 className="text-xl font-semibold text-gray-900">Rental Ready Admin Dashboard</h1>
+                <p className="text-sm text-gray-600">Rental Ready Management System</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
