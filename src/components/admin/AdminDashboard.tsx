@@ -127,7 +127,7 @@ const AdminDashboard: React.FC = () => {
               }`}
             >
               Checklist Systems
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -141,5 +141,3 @@ const AdminDashboard: React.FC = () => {
 };
 
 export default AdminDashboard;
-  )
-}
