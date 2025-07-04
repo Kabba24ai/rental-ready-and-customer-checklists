@@ -123,6 +123,7 @@ export const mockCustomerQuestions: CustomerQuestion[] = [
   }
 ];
 
+// Add missing customer templates for other categories
 export const mockCustomerChecklistTemplates: CustomerChecklistTemplate[] = [
   {
     id: 'ctemplate-heavy',
@@ -134,6 +135,31 @@ export const mockCustomerChecklistTemplates: CustomerChecklistTemplate[] = [
       { id: 'ctq-1', questionId: 'cq-keys', sortOrder: 1, required: true },
       { id: 'ctq-2', questionId: 'cq-remote', sortOrder: 2, required: false },
       { id: 'ctq-3', questionId: 'cq-bucket', sortOrder: 3, required: true }
+    ],
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z'
+  },
+  {
+    id: 'ctemplate-compact',
+    name: 'Compact Equipment Customer Checklist',
+    description: 'Standard delivery/return checklist for compact equipment',
+    equipmentCategory: 'Compact Equipment',
+    isActive: true,
+    questions: [
+      { id: 'ctq-4', questionId: 'cq-keys', sortOrder: 1, required: true },
+      { id: 'ctq-5', questionId: 'cq-remote', sortOrder: 2, required: false }
+    ],
+    createdAt: '2024-01-01T00:00:00Z',
+    updatedAt: '2024-01-01T00:00:00Z'
+  },
+  {
+    id: 'ctemplate-power',
+    name: 'Power Equipment Customer Checklist',
+    description: 'Standard delivery/return checklist for power equipment',
+    equipmentCategory: 'Power Equipment',
+    isActive: true,
+    questions: [
+      { id: 'ctq-6', questionId: 'cq-keys', sortOrder: 1, required: true }
     ],
     createdAt: '2024-01-01T00:00:00Z',
     updatedAt: '2024-01-01T00:00:00Z'
