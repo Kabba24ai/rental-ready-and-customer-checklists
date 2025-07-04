@@ -20,6 +20,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateToCustomerAdm
         return <ChecklistTemplateManager />;
       default:
         return (
+          <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <div className="flex items-center gap-3 mb-4">
@@ -74,6 +75,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateToCustomerAdm
               </button>
             </div>
           </div>
+          </>
         );
     }
   };
