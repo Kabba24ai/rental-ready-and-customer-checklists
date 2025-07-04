@@ -146,11 +146,6 @@ function App() {
     setTimeout(() => setShowSuccess(false), 3000);
   };
 
-  const handleCreateChecklistMaster = (name: string, equipmentCategory: string) => {
-    setCurrentChecklistMasterName(name);
-    setCurrentView('admin');
-  };
-
   const handleCreateChecklistMaster = (name: string) => {
     setCurrentChecklistMasterName(name);
     setCurrentView('admin');
