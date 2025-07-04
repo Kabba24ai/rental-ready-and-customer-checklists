@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Save, X, ClipboardList } from 'lucide-react';
 
 interface CreateChecklistMasterFormProps {
-  onSave: (name: string, equipmentCategory: string) => void;
+  onSave: (name: string) => void;
   onCancel: () => void;
 }
 
@@ -11,12 +11,11 @@ const CreateChecklistMasterForm: React.FC<CreateChecklistMasterFormProps> = ({
   onCancel
 }) => {
   const [name, setName] = useState('');
-  const [equipmentCategory, setEquipmentCategory] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (name.trim() && equipmentCategory) {
-      onSave(name.trim(), equipmentCategory);
+    if (name.trim()) {
+      onSave(name.trim());
     }
   };
 
@@ -51,7 +50,8 @@ const CreateChecklistMasterForm: React.FC<CreateChecklistMasterFormProps> = ({
             <ClipboardList className="w-16 h-16 text-blue-600 mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Name Your Checklist System</h2>
             <p className="text-gray-600">
-              This will create a complete checklist system that includes both rental ready and customer checklists
+              This will create a complete checklist system that includes both rental ready and customer checklists. 
+              The system can be assigned to multiple equipment items later.
             </p>
           </div>
 
@@ -64,33 +64,13 @@ const CreateChecklistMasterForm: React.FC<CreateChecklistMasterFormProps> = ({
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="e.g., Heavy Equipment Complete System"
+                placeholder="e.g., Standard Heavy Equipment System"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
                 required
                 autoFocus
               />
               <p className="mt-2 text-sm text-gray-500">
-                Choose a descriptive name that identifies the type of equipment this system will manage
-              </p>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Equipment Category *
-              </label>
-              <select
-                value={equipmentCategory}
-                onChange={(e) => setEquipmentCategory(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
-                required
-              >
-                <option value="">Select Equipment Category</option>
-                <option value="Heavy Equipment">Heavy Equipment</option>
-                <option value="Compact Equipment">Compact Equipment</option>
-                <option value="Power Equipment">Power Equipment</option>
-              </select>
-              <p className="mt-2 text-sm text-gray-500">
-                This determines which equipment types will use this checklist system
+                Choose a descriptive name that identifies this checklist system. You can assign it to multiple equipment items later.
               </p>
             </div>
 
@@ -101,16 +81,24 @@ const CreateChecklistMasterForm: React.FC<CreateChecklistMasterFormProps> = ({
                 <li>2. Build your rental ready template</li>
                 <li>3. Create or select customer checklist questions</li>
                 <li>4. Build your customer checklist template</li>
-                <li>5. Your complete system will be ready to use</li>
+                <li>5. Your complete system will be ready to assign to equipment</li>
               </ol>
+            </div>
+
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+              <h3 className="font-medium text-gray-900 mb-2">📋 System Assignment</h3>
+              <p className="text-sm text-gray-600">
+                Once created, this checklist system can be assigned to multiple equipment items (3, 5, 12, or more) 
+                through the Equipment Profile screen in a separate module.
+              </p>
             </div>
 
             <div className="flex items-center gap-4 pt-6">
               <button
                 type="submit"
-                disabled={!name.trim() || !equipmentCategory}
+                disabled={!name.trim()}
                 className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors flex-1 justify-center ${
-                  name.trim() && equipmentCategory
+                  name.trim()
                     ? 'bg-blue-600 hover:bg-blue-700 text-white'
                     : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 }`}

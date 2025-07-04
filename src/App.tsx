@@ -151,6 +151,11 @@ function App() {
     setCurrentView('admin');
   };
 
+  const handleCreateChecklistMaster = (name: string) => {
+    setCurrentChecklistMasterName(name);
+    setCurrentView('admin');
+  };
+
   const handleEditChecklistMaster = (systemId: string) => {
     // For now, just go to admin view
     setCurrentView('admin');

@@ -35,8 +35,7 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
   });
 
   const filteredSystems = systemsWithCounts.filter(system =>
-    system.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    system.equipmentCategory.toLowerCase().includes(searchTerm.toLowerCase())
+    system.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleDeleteSystem = (systemId: string) => {
@@ -79,7 +78,7 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Checklist Systems</h2>
-            <p className="text-gray-600">Complete checklist systems combining rental ready and customer checklists</p>
+            <p className="text-gray-600">Independent checklist systems that can be assigned to multiple equipment items</p>
           </div>
           <button
             onClick={onCreateNew}
@@ -132,9 +131,6 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                       Checklist System Name
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Equipment Category
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Rental Ready
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -157,11 +153,6 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                             </div>
                           </div>
                         </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          {system.equipmentCategory}
-                        </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-2">
@@ -203,6 +194,16 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
               </table>
             </div>
           )}
+        </div>
+
+        {/* Info Box */}
+        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 className="font-medium text-blue-900 mb-2">📋 System Assignment</h3>
+          <p className="text-sm text-blue-800">
+            These checklist systems are independent and can be assigned to multiple equipment items (3, 5, 12, or more) 
+            through the Equipment Profile screen in a separate module. Each system combines both rental ready and customer 
+            checklists for complete equipment management.
+          </p>
         </div>
       </div>
     </div>
