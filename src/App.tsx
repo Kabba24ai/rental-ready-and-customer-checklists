@@ -191,11 +191,15 @@ function App() {
   }
 
   if (currentView === 'admin') {
-    return <AdminDashboard />;
+    return <AdminDashboard 
+      onNavigateToCustomerAdmin={() => setCurrentView('customer-admin')}
+    />;
   }
 
   if (currentView === 'customer-admin') {
-    return <CustomerAdminDashboard />;
+    return <CustomerAdminDashboard 
+      onNavigateToRentalReady={() => setCurrentView('admin')}
+    />;
   }
 
   if (currentView === 'customer-delivery') {

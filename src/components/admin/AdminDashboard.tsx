@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { Settings, Database, FileText, Plus, Search } from 'lucide-react';
+import { Settings, Database, FileText, Plus, Search, Users, ArrowRight } from 'lucide-react';
 import QuestionManager from './QuestionManager';
 import ChecklistTemplateManager from './ChecklistTemplateManager';
 
+interface AdminDashboardProps {
+  onNavigateToCustomerAdmin?: () => void;
+}
+
 type AdminView = 'overview' | 'questions' | 'templates';
 
-const AdminDashboard: React.FC = () => {
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ onNavigateToCustomerAdmin }) => {
   const [currentView, setCurrentView] = useState<AdminView>('overview');
 
   const renderContent = () => {
@@ -56,6 +60,20 @@ const AdminDashboard: React.FC = () => {
               </p>
             </div>
           </div>
+          
+          {/* Navigation to Customer Admin */}
+          <div className="mt-6 bg-purple-50 border border-purple-200 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-medium text-purple-900">Ready for Customer Checklists?</h3>
+                <p className="text-sm text-purple-700">Set up delivery and return checklists for customers</p>
+              </div>
+              <button onClick={onNavigateToCustomerAdmin} className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                <Users className="w-4 h-4" />
+                Customer Admin <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         );
     }
   };
@@ -104,6 +122,15 @@ const AdminDashboard: React.FC = () => {
                   }`}
                 >
                   Templates
+                </button>
+                <button
+                  onClick={onNavigateToCustomerAdmin}
+                  className="px-3 py-2 rounded-lg text-sm font-medium text-purple-600 hover:text-purple-700 hover:bg-purple-50 transition-colors"
+                  title="Go to Customer Admin Dashboard"
+                >
+                  <div className="flex items-center gap-1">
+                    <Users className="w-4 h-4" />
+                  </div>
                 </button>
               </nav>
             </div>
