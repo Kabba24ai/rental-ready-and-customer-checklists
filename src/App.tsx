@@ -253,10 +253,6 @@ function App() {
                   <ClipboardList className="w-4 h-4" />
                   <span className="text-sm font-medium">Equipment Mgt.</span>
                 </button>
-                <div className="flex items-center gap-2">
-                  <Settings className="w-5 h-5 text-gray-400" />
-                  <span className="text-sm text-gray-600">Kabba 2 Rental System</span>
-                </div>
               </div>
             </div>
           </div>
@@ -367,99 +363,6 @@ function App() {
                   <ClipboardList className="w-4 h-4" />
                   <span className="text-sm font-medium">Back to Main</span>
                 </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <CustomerDeliveryChecklist 
-          mode="delivery" 
-          onComplete={handleCustomerChecklistComplete}
-        />
-      </div>
-    );
-  }
-
-  if (currentView === 'customer-return') {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="bg-white shadow-sm border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center gap-3">
-                <Package className="w-8 h-8 text-green-600" />
-                <div>
-                  <h1 className="text-xl font-semibold text-gray-900">Customer Return Checklist</h1>
-                  <p className="text-sm text-gray-600">Equipment Return Confirmation</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => setCurrentView('checklist')}
-                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <ClipboardList className="w-4 h-4" />
-                  <span className="text-sm font-medium">Back to Main</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <CustomerDeliveryChecklist 
-          mode="return" 
-          onComplete={handleCustomerChecklistComplete}
-        />
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <ClipboardList className="w-8 h-8 text-blue-600" />
-              <div>
-                <h1 className="text-xl font-semibold text-gray-900">Rental Ready Checklist</h1>
-                <p className="text-sm text-gray-600">Equipment Maintenance & Inspection System</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setCurrentView('customer-delivery')}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <Truck className="w-4 h-4" />
-                <span className="text-sm font-medium">Customer Delivery</span>
-              </button>
-              <button
-                onClick={() => setCurrentView('customer-return')}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <Package className="w-4 h-4" />
-                <span className="text-sm font-medium">Customer Return</span>
-              </button>
-              <button
-                onClick={() => setCurrentView('checklist-master')}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <Settings className="w-4 h-4" />
-                <span className="text-sm font-medium">Checklist Master - Admin</span>
-              </button>
-              <button
-                onClick={() => setCurrentView('rental-ready')}
-                className="flex items-center gap-2 px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
-              >
-                <ClipboardList className="w-4 h-4" />
-                <span className="text-sm font-medium">Rental Ready Mgt.</span>
-              </button>
-              <div className="flex items-center gap-2">
-                <Settings className="w-5 h-5 text-gray-400" />
-                <span className="text-sm text-gray-600">Kabba 2 Rental System</span>
               </div>
             </div>
           </div>
