@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ArrowRight, ArrowLeft, CheckCircle, Circle, Save, X, ClipboardList } from 'lucide-react';
 import CreateChecklistMasterForm from './CreateChecklistMasterForm';
+import RentalReadyTemplateSelector from './RentalReadyTemplateSelector';
+import CustomerTemplateSelector from './CustomerTemplateSelector';
 import QuestionManager from '../admin/QuestionManager';
 import ChecklistTemplateManager from '../admin/ChecklistTemplateManager';
 import CustomerQuestionManager from '../customer/CustomerQuestionManager';
@@ -18,13 +20,15 @@ const GuidedChecklistWorkflow: React.FC<GuidedChecklistWorkflowProps> = ({
   const [currentStep, setCurrentStep] = useState(1);
   const [systemName, setSystemName] = useState('');
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
+  const [selectedRentalReadyTemplate, setSelectedRentalReadyTemplate] = useState<string>('');
+  const [selectedCustomerTemplate, setSelectedCustomerTemplate] = useState<string>('');
 
   const steps = [
     { id: 1, title: 'Name Your Checklist', description: 'Create and name your checklist system' },
     { id: 2, title: 'Rental Ready Questions', description: 'View/Add rental ready questions & categories' },
-    { id: 3, title: 'Rental Ready Template', description: 'Create rental ready checklist template' },
+    { id: 3, title: 'Assign Rental Ready Template', description: 'Select or create rental ready checklist template' },
     { id: 4, title: 'Customer Questions', description: 'View/Add customer checklist questions & categories' },
-    { id: 5, title: 'Customer Template', description: 'Create customer checklist template' },
+    { id: 5, title: 'Assign Customer Template', description: 'Select or create customer checklist template' },
     { id: 6, title: 'Complete & Save', description: 'Save and return to Equipment Mgt.' }
   ];
 
@@ -85,17 +89,24 @@ const GuidedChecklistWorkflow: React.FC<GuidedChecklistWorkflowProps> = ({
         return (
           <div className="space-y-6">
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h3 className="font-medium text-green-900 mb-2">Step 3: Create Rental Ready Template</h3>
+              <h3 className="font-medium text-green-900 mb-2">Step 3: Assign Rental Ready Template</h3>
               <p className="text-sm text-green-800">
-                Build your rental ready checklist template by selecting and organizing questions. 
-                This template will be used for equipment inspections.
+                Select an existing rental ready template or create a new one. This template will be assigned to your checklist system for equipment inspections.
               </p>
             </div>
-            <ChecklistTemplateManager />
+            <RentalReadyTemplateSelector 
+              selectedTemplate={selectedRentalReadyTemplate}
+              onTemplateSelect={setSelectedRentalReadyTemplate}
+            />
             <div className="flex justify-end">
               <button
-                onClick={() => handleStepComplete(3)}
-                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                onClick={() => selectedRentalReadyTemplate && handleStepComplete(3)}
+                disabled={!selectedRentalReadyTemplate}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
+                  selectedRentalReadyTemplate
+                    ? 'bg-green-600 hover:bg-green-700 text-white'
+                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                }`}
               >
                 Continue to Customer Questions
                 <ArrowRight className="w-4 h-4" />
@@ -129,17 +140,24 @@ const GuidedChecklistWorkflow: React.FC<GuidedChecklistWorkflowProps> = ({
         return (
           <div className="space-y-6">
             <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-              <h3 className="font-medium text-indigo-900 mb-2">Step 5: Create Customer Template</h3>
+              <h3 className="font-medium text-indigo-900 mb-2">Step 5: Assign Customer Template</h3>
               <p className="text-sm text-indigo-800">
-                Build your customer checklist template for delivery and return processes. 
-                This template will be used for customer-facing checklists.
+                Select an existing customer template or create a new one. This template will be assigned to your checklist system for delivery and return processes.
               </p>
             </div>
-            <CustomerChecklistTemplateManager />
+            <CustomerTemplateSelector 
+              selectedTemplate={selectedCustomerTemplate}
+              onTemplateSelect={setSelectedCustomerTemplate}
+            />
             <div className="flex justify-end">
               <button
-                onClick={() => handleStepComplete(5)}
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                onClick={() => selectedCustomerTemplate && handleStepComplete(5)}
+                disabled={!selectedCustomerTemplate}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
+                  selectedCustomerTemplate
+                    ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                }`}
               >
                 Complete Setup
                 <ArrowRight className="w-4 h-4" />
@@ -168,19 +186,15 @@ const GuidedChecklistWorkflow: React.FC<GuidedChecklistWorkflowProps> = ({
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4" />
-                  <span>Rental ready questions and categories</span>
+                  <span>Assigned rental ready template: "{selectedRentalReadyTemplate}"</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4" />
-                  <span>Rental ready checklist template</span>
+                  <span>Assigned customer template: "{selectedCustomerTemplate}"</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4" />
-                  <span>Customer questions and categories</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" />
-                  <span>Customer checklist template</span>
+                  <span>Complete checklist system ready for assignment</span>
                 </div>
               </div>
             </div>
