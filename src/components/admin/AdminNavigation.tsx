@@ -6,7 +6,7 @@ interface AdminNavigationProps {
   onNavigateToChecklistMaster: () => void;
   onNavigateToRentalReadyAdmin: () => void;
   onNavigateToCustomerAdmin: () => void;
-  onNavigateToRentalReadyManagement: () => void;
+  onNavigateToEquipmentManagement: () => void;
 }
 
 const AdminNavigation: React.FC<AdminNavigationProps> = ({
@@ -14,7 +14,7 @@ const AdminNavigation: React.FC<AdminNavigationProps> = ({
   onNavigateToChecklistMaster,
   onNavigateToRentalReadyAdmin,
   onNavigateToCustomerAdmin,
-  onNavigateToRentalReadyManagement
+  onNavigateToEquipmentManagement
 }) => {
   const navItems = [
     {
@@ -43,11 +43,11 @@ const AdminNavigation: React.FC<AdminNavigationProps> = ({
     },
     {
       id: 'rental-ready-management',
-      label: 'Rental Ready Mgt.',
+      label: 'Equipment Mgt.',
       description: 'Equipment inspections',
       icon: FileText,
       color: 'indigo',
-      onClick: onNavigateToRentalReadyManagement
+      onClick: onNavigateToEquipmentManagement
     }
   ];
 

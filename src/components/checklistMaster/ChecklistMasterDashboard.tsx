@@ -11,7 +11,7 @@ interface ChecklistMasterDashboardProps {
   onEditSystem: (systemId: string) => void;
   onNavigateToRentalReady: () => void;
   onNavigateToCustomerAdmin: () => void;
-  onNavigateToRentalReadyManagement: () => void;
+  onNavigateToEquipmentManagement: () => void;
 }
 
 const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
@@ -19,7 +19,7 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
   onEditSystem,
   onNavigateToRentalReady,
   onNavigateToCustomerAdmin,
-  onNavigateToRentalReadyManagement
+  onNavigateToEquipmentManagement
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [successMessage, setSuccessMessage] = useState<string>('');
@@ -77,7 +77,7 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
           onNavigateToChecklistMaster={() => {}} // Already on this screen
           onNavigateToRentalReadyAdmin={onNavigateToRentalReady}
           onNavigateToCustomerAdmin={onNavigateToCustomerAdmin}
-          onNavigateToRentalReadyManagement={onNavigateToRentalReadyManagement}
+          onNavigateToRentalReadyManagement={onNavigateToEquipmentManagement}
         />
 
         {/* Success Message */}

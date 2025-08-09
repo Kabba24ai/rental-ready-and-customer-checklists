@@ -8,7 +8,7 @@ interface AdminDashboardProps {
   onNavigateToCustomerAdmin?: () => void;
   onNavigateToChecklistMaster?: () => void;
   onNavigateToRentalReady?: () => void;
-  onNavigateToRentalReadyManagement?: () => void;
+  onNavigateToEquipmentManagement?: () => void;
 }
 
 type AdminView = 'overview' | 'questions' | 'templates';
@@ -17,7 +17,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   onNavigateToCustomerAdmin, 
   onNavigateToChecklistMaster, 
   onNavigateToRentalReady,
-  onNavigateToRentalReadyManagement 
+  onNavigateToEquipmentManagement 
 }) => {
   const [currentView, setCurrentView] = useState<AdminView>('overview');
 
@@ -154,7 +154,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           onNavigateToChecklistMaster={onNavigateToChecklistMaster || (() => {})}
           onNavigateToRentalReadyAdmin={() => {}} // Already on this screen
           onNavigateToCustomerAdmin={onNavigateToCustomerAdmin || (() => {})}
-          onNavigateToRentalReadyManagement={onNavigateToRentalReadyManagement || (() => {})}
+          onNavigateToRentalReadyManagement={onNavigateToEquipmentManagement || (() => {})}
         />
 
         {renderContent()}

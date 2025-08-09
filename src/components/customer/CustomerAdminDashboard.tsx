@@ -7,7 +7,7 @@ import AdminNavigation from '../admin/AdminNavigation';
 interface CustomerAdminDashboardProps {
   onNavigateToRentalReady?: () => void;
   onNavigateToChecklistMaster?: () => void;
-  onNavigateToRentalReadyManagement?: () => void;
+  onNavigateToEquipmentManagement?: () => void;
 }
 
 type CustomerAdminView = 'overview' | 'questions' | 'templates';
@@ -15,7 +15,7 @@ type CustomerAdminView = 'overview' | 'questions' | 'templates';
 const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({ 
   onNavigateToRentalReady, 
   onNavigateToChecklistMaster,
-  onNavigateToRentalReadyManagement 
+  onNavigateToEquipmentManagement 
 }) => {
   const [currentView, setCurrentView] = useState<CustomerAdminView>('overview');
 
@@ -141,7 +141,7 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({
           onNavigateToChecklistMaster={onNavigateToChecklistMaster || (() => {})}
           onNavigateToRentalReadyAdmin={onNavigateToRentalReady || (() => {})}
           onNavigateToCustomerAdmin={() => {}} // Already on this screen
-          onNavigateToRentalReadyManagement={onNavigateToRentalReadyManagement || (() => {})}
+          onNavigateToRentalReadyManagement={onNavigateToEquipmentManagement || (() => {})}
         />
 
         {renderContent()}

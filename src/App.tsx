@@ -186,7 +186,7 @@ function App() {
         onEditSystem={handleEditChecklistMaster}
         onNavigateToRentalReady={handleNavigateToRentalReady}
         onNavigateToCustomerAdmin={handleNavigateToCustomerAdmin}
-        onNavigateToRentalReadyManagement={() => setCurrentView('rental-ready')}
+        onNavigateToEquipmentManagement={() => setCurrentView('rental-ready')}
       />
     );
   }
@@ -329,7 +329,7 @@ function App() {
       onNavigateToCustomerAdmin={() => setCurrentView('customer-admin')}
       onNavigateToChecklistMaster={() => setCurrentView('checklist-master')}
       onNavigateToRentalReady={() => setCurrentView('rental-ready')}
-      onNavigateToRentalReadyManagement={() => setCurrentView('rental-ready')}
+      onNavigateToEquipmentManagement={() => setCurrentView('rental-ready')}
     />;
   }
 
@@ -337,7 +337,7 @@ function App() {
     return <CustomerAdminDashboard 
       onNavigateToRentalReady={() => setCurrentView('admin')}
       onNavigateToChecklistMaster={() => setCurrentView('checklist-master')}
-      onNavigateToRentalReadyManagement={() => setCurrentView('rental-ready')}
+      onNavigateToEquipmentManagement={() => setCurrentView('rental-ready')}
     />;
   }
 
