@@ -241,18 +241,18 @@ function App() {
                   <span className="text-sm font-medium">Customer Return</span>
                 </button>
                 <button
-                  onClick={() => setCurrentView('checklist-master')}
-                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <ClipboardList className="w-4 h-4" />
-                  <span className="text-sm font-medium">Checklist Mgt.</span>
-                </button>
-                <button
                   onClick={() => setCurrentView('rental-ready')}
                   className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   <ClipboardList className="w-4 h-4" />
                   <span className="text-sm font-medium">Equipment Mgt.</span>
+                </button>
+                <button
+                  onClick={() => setCurrentView('checklist-master')}
+                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <ClipboardList className="w-4 h-4" />
+                  <span className="text-sm font-medium">Checklist Mgt.</span>
                 </button>
               </div>
             </div>

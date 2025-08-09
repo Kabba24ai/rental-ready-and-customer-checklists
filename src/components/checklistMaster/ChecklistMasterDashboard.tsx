@@ -134,7 +134,7 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                   className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors mx-auto"
                 >
                   <Plus className="w-4 h-4" />
-                  Create New Checklist System
+                  <span className="text-sm font-medium">Checklist Mgt.</span>
                 </button>
               )}
             </div>
