@@ -367,72 +367,72 @@ function App() {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Success Message */}
-      {showSuccess && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                <div className="w-2 h-2 bg-white rounded-full"></div>
+        {/* Success Message */}
+        {showSuccess && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
+                  <div className="w-2 h-2 bg-white rounded-full"></div>
+                </div>
+                <span className="text-green-800 font-medium">
+                  Equipment status updated successfully!
+                </span>
               </div>
-              <span className="text-green-800 font-medium">
-                Equipment status updated successfully!
-              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Main Content */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Equipment Selector */}
+            <div className="lg:col-span-1">
+              <EquipmentSelector
+                equipment={equipment}
+                selectedEquipment={selectedEquipment}
+                onSelectEquipment={setSelectedEquipment}
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+              />
+            </div>
+
+            {/* Checklist Form */}
+            <div className="lg:col-span-2">
+              {selectedEquipment && checklist ? (
+                <ChecklistForm
+                  equipment={selectedEquipment}
+                  items={checklist.items}
+                  onUpdateItem={handleUpdateItem}
+                  inspectorName={checklist.inspectorName}
+                  onInspectorNameChange={handleInspectorNameChange}
+                  notes={checklist.notes || ''}
+                  onNotesChange={handleNotesChange}
+                  equipmentHours={checklist.equipmentHours || 0}
+                  onEquipmentHoursChange={handleEquipmentHoursChange}
+                  inspectors={mockInspectors}
+                  onMarkRentalReady={handleMarkRentalReady}
+                  onMarkDamaged={handleMarkDamaged}
+                  onSaveDraft={handleSaveDraft}
+                />
+              ) : (
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
+                  <ClipboardList className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    Select Equipment to Begin
+                  </h3>
+                  <p className="text-gray-600">
+                    Choose equipment from the list to start the rental ready inspection process.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
-      )}
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Equipment Selector */}
-          <div className="lg:col-span-1">
-            <EquipmentSelector
-              equipment={equipment}
-              selectedEquipment={selectedEquipment}
-              onSelectEquipment={setSelectedEquipment}
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-            />
-          </div>
-
-          {/* Checklist Form */}
-          <div className="lg:col-span-2">
-            {selectedEquipment && checklist ? (
-              <ChecklistForm
-                equipment={selectedEquipment}
-                items={checklist.items}
-                onUpdateItem={handleUpdateItem}
-                inspectorName={checklist.inspectorName}
-                onInspectorNameChange={handleInspectorNameChange}
-                notes={checklist.notes || ''}
-                onNotesChange={handleNotesChange}
-                equipmentHours={checklist.equipmentHours || 0}
-                onEquipmentHoursChange={handleEquipmentHoursChange}
-                inspectors={mockInspectors}
-                onMarkRentalReady={handleMarkRentalReady}
-                onMarkDamaged={handleMarkDamaged}
-                onSaveDraft={handleSaveDraft}
-              />
-            ) : (
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-                <ClipboardList className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">
-                  Select Equipment to Begin
-                </h3>
-                <p className="text-gray-600">
-                  Choose equipment from the list to start the rental ready inspection process.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
