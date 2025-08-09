@@ -61,7 +61,7 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
             <div className="flex items-center gap-3">
               <ClipboardList className="w-8 h-8 text-blue-600" />
               <div>
-                <h1 className="text-xl font-semibold text-gray-900">Checklist Master System</h1>
+                <h1 className="text-xl font-semibold text-gray-900">Checklist Management</h1>
                 <p className="text-sm text-gray-600">Manage complete checklist systems for equipment</p>
               </div>
             </div>
