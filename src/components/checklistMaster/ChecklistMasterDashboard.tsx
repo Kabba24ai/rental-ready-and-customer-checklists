@@ -4,6 +4,7 @@ import { ChecklistMasterSystemWithCounts } from '../../types/checklistMaster';
 import { mockChecklistMasterSystems } from '../../data/checklistMasterMockData';
 import { mockChecklistTemplates } from '../../data/adminMockData';
 import { mockCustomerChecklistTemplates } from '../../data/customerAdminMockData';
+import { mockCustomerChecklistTemplates } from '../../data/customerAdminMockData';
 import AdminNavigation from '../admin/AdminNavigation';
 
 interface ChecklistMasterDashboardProps {
@@ -171,28 +172,58 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <button
-                          onClick={onNavigateToRentalReady}
-                          className="flex items-center gap-2 hover:bg-blue-50 p-2 rounded-lg transition-colors group"
-                          title="Go to Rental Ready Admin"
-                        >
-                          <ClipboardList className="w-4 h-4 text-blue-500 group-hover:text-blue-600" />
-                          <span className="text-sm text-gray-900">
-                            {system.rentalReadyQuestionCount} questions
-                          </span>
-                        </button>
+                        {system.rentalReadyTemplateId ? (
+                          <button
+                            onClick={onNavigateToRentalReady}
+                            className="flex items-center gap-2 hover:bg-blue-50 p-2 rounded-lg transition-colors group"
+                            title="Go to Rental Ready Admin"
+                          >
+                            <ClipboardList className="w-4 h-4 text-blue-500 group-hover:text-blue-600" />
+                            <div className="text-left">
+                              <div className="text-sm text-gray-900">
+                                {system.rentalReadyQuestionCount} questions
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                {mockChecklistTemplates.find(t => t.id === system.rentalReadyTemplateId)?.name || 'Unknown Template'}
+                              </div>
+                            </div>
+                          </button>
+                        ) : (
+                          <div className="flex items-center gap-2 p-2 text-gray-400">
+                            <ClipboardList className="w-4 h-4" />
+                            <div className="text-left">
+                              <div className="text-sm">No template assigned</div>
+                              <div className="text-xs">Click to assign</div>
+                            </div>
+                          </div>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <button
-                          onClick={onNavigateToCustomerAdmin}
-                          className="flex items-center gap-2 hover:bg-purple-50 p-2 rounded-lg transition-colors group"
-                          title="Go to Customer Checklist Admin"
-                        >
-                          <ClipboardList className="w-4 h-4 text-purple-500 group-hover:text-purple-600" />
-                          <span className="text-sm text-gray-900">
-                            {system.customerQuestionCount} questions
-                          </span>
-                        </button>
+                        {system.customerTemplateId ? (
+                          <button
+                            onClick={onNavigateToCustomerAdmin}
+                            className="flex items-center gap-2 hover:bg-purple-50 p-2 rounded-lg transition-colors group"
+                            title="Go to Customer Checklist Admin"
+                          >
+                            <ClipboardList className="w-4 h-4 text-purple-500 group-hover:text-purple-600" />
+                            <div className="text-left">
+                              <div className="text-sm text-gray-900">
+                                {system.customerQuestionCount} questions
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                {mockCustomerChecklistTemplates.find(t => t.id === system.customerTemplateId)?.name || 'Unknown Template'}
+                              </div>
+                            </div>
+                          </button>
+                        ) : (
+                          <div className="flex items-center gap-2 p-2 text-gray-400">
+                            <ClipboardList className="w-4 h-4" />
+                            <div className="text-left">
+                              <div className="text-sm">No template assigned</div>
+                              <div className="text-xs">Click to assign</div>
+                            </div>
+                          </div>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex items-center gap-2">
