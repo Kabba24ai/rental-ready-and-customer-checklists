@@ -172,21 +172,21 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {system.rentalReadyTemplateId ? (
-                          <button
-                            onClick={onNavigateToRentalReady}
-                            className="flex items-center gap-2 hover:bg-blue-50 p-2 rounded-lg transition-colors group"
-                            title="Go to Rental Ready Admin"
-                          >
-                            <ClipboardList className="w-4 h-4 text-blue-500 group-hover:text-blue-600" />
+                          <div className="flex items-center gap-2">
+                            <ClipboardList className="w-4 h-4 text-blue-500" />
                             <div className="text-left">
                               <div className="text-sm text-gray-900">
                                 {system.rentalReadyQuestionCount} questions
                               </div>
-                              <div className="text-xs text-gray-500">
+                              <button
+                                onClick={onNavigateToRentalReady}
+                                className="text-xs text-blue-600 hover:text-blue-800 hover:underline transition-colors"
+                                title="Go to this Rental Ready Template"
+                              >
                                 {mockChecklistTemplates.find(t => t.id === system.rentalReadyTemplateId)?.name || 'Unknown Template'}
-                              </div>
+                              </button>
                             </div>
-                          </button>
+                          </div>
                         ) : (
                           <div className="flex items-center gap-2 p-2 text-gray-400">
                             <ClipboardList className="w-4 h-4" />
@@ -199,21 +199,21 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {system.customerTemplateId ? (
-                          <button
-                            onClick={onNavigateToCustomerAdmin}
-                            className="flex items-center gap-2 hover:bg-purple-50 p-2 rounded-lg transition-colors group"
-                            title="Go to Customer Checklist Admin"
-                          >
-                            <ClipboardList className="w-4 h-4 text-purple-500 group-hover:text-purple-600" />
+                          <div className="flex items-center gap-2">
+                            <ClipboardList className="w-4 h-4 text-purple-500" />
                             <div className="text-left">
                               <div className="text-sm text-gray-900">
                                 {system.customerQuestionCount} questions
                               </div>
-                              <div className="text-xs text-gray-500">
+                              <button
+                                onClick={onNavigateToCustomerAdmin}
+                                className="text-xs text-purple-600 hover:text-purple-800 hover:underline transition-colors"
+                                title="Go to this Customer Checklist Template"
+                              >
                                 {mockCustomerChecklistTemplates.find(t => t.id === system.customerTemplateId)?.name || 'Unknown Template'}
-                              </div>
+                              </button>
                             </div>
-                          </button>
+                          </div>
                         ) : (
                           <div className="flex items-center gap-2 p-2 text-gray-400">
                             <ClipboardList className="w-4 h-4" />
