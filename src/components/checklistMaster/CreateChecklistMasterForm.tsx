@@ -4,11 +4,13 @@ import { Save, X, ClipboardList } from 'lucide-react';
 interface CreateChecklistMasterFormProps {
   onSave: (name: string) => void;
   onCancel: () => void;
+  isWorkflowMode?: boolean;
 }
 
 const CreateChecklistMasterForm: React.FC<CreateChecklistMasterFormProps> = ({
   onSave,
-  onCancel
+  onCancel,
+  isWorkflowMode = false
 }) => {
   const [name, setName] = useState('');
 
@@ -104,7 +106,7 @@ const CreateChecklistMasterForm: React.FC<CreateChecklistMasterFormProps> = ({
                 }`}
               >
                 <Save className="w-5 h-5" />
-                Create Checklist System
+                {isWorkflowMode ? 'Continue to Questions' : 'Create Checklist System'}
               </button>
               <button
                 type="button"

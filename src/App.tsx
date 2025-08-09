@@ -35,10 +35,11 @@ import CustomerDeliveryChecklist from './components/customer/CustomerDeliveryChe
 import ChecklistMasterDashboard from './components/checklistMaster/ChecklistMasterDashboard';
 import CreateChecklistMasterForm from './components/checklistMaster/CreateChecklistMasterForm';
 import EditChecklistMasterForm from './components/checklistMaster/EditChecklistMasterForm';
+import GuidedChecklistWorkflow from './components/checklistMaster/GuidedChecklistWorkflow';
 import AdminNavigation from './components/admin/AdminNavigation';
 import { ClipboardList, Settings, Users, Truck, Package } from 'lucide-react';
 
-type AppView = 'checklist' | 'admin' | 'customer-admin' | 'customer-delivery' | 'customer-return' | 'checklist-master' | 'create-checklist-master' | 'edit-checklist-master' | 'rental-ready';
+type AppView = 'checklist' | 'admin' | 'customer-admin' | 'customer-delivery' | 'customer-return' | 'checklist-master' | 'create-checklist-master' | 'edit-checklist-master' | 'rental-ready' | 'guided-workflow';
 
 function App() {
   const [currentView, setCurrentView] = useState<AppView>('rental-ready');
@@ -193,8 +194,8 @@ function App() {
 
   if (currentView === 'create-checklist-master') {
     return (
-      <CreateChecklistMasterForm
-        onSave={handleCreateChecklistMaster}
+      <GuidedChecklistWorkflow
+        onComplete={handleCreateChecklistMaster}
         onCancel={() => setCurrentView('checklist-master')}
       />
     );
