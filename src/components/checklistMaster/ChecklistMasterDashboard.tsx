@@ -4,7 +4,6 @@ import { ChecklistMasterSystemWithCounts } from '../../types/checklistMaster';
 import { mockChecklistMasterSystems } from '../../data/checklistMasterMockData';
 import { mockChecklistTemplates } from '../../data/adminMockData';
 import { mockCustomerChecklistTemplates } from '../../data/customerAdminMockData';
-import { mockCustomerChecklistTemplates } from '../../data/customerAdminMockData';
 import AdminNavigation from '../admin/AdminNavigation';
 
 interface ChecklistMasterDashboardProps {
