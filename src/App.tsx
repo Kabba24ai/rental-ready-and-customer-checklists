@@ -35,6 +35,7 @@ import CustomerDeliveryChecklist from './components/customer/CustomerDeliveryChe
 import ChecklistMasterDashboard from './components/checklistMaster/ChecklistMasterDashboard';
 import CreateChecklistMasterForm from './components/checklistMaster/CreateChecklistMasterForm';
 import EditChecklistMasterForm from './components/checklistMaster/EditChecklistMasterForm';
+import AdminNavigation from './components/admin/AdminNavigation';
 import { ClipboardList, Settings, Users, Truck, Package } from 'lucide-react';
 
 type AppView = 'checklist' | 'admin' | 'customer-admin' | 'customer-delivery' | 'customer-return' | 'checklist-master' | 'create-checklist-master' | 'edit-checklist-master' | 'rental-ready';
@@ -185,6 +186,7 @@ function App() {
         onEditSystem={handleEditChecklistMaster}
         onNavigateToRentalReady={handleNavigateToRentalReady}
         onNavigateToCustomerAdmin={handleNavigateToCustomerAdmin}
+        onNavigateToRentalReadyManagement={() => setCurrentView('rental-ready')}
       />
     );
   }
@@ -324,6 +326,7 @@ function App() {
       onNavigateToCustomerAdmin={() => setCurrentView('customer-admin')}
       onNavigateToChecklistMaster={() => setCurrentView('checklist-master')}
       onNavigateToRentalReady={() => setCurrentView('rental-ready')}
+      onNavigateToRentalReadyManagement={() => setCurrentView('rental-ready')}
     />;
   }
 
@@ -331,6 +334,7 @@ function App() {
     return <CustomerAdminDashboard 
       onNavigateToRentalReady={() => setCurrentView('admin')}
       onNavigateToChecklistMaster={() => setCurrentView('checklist-master')}
+      onNavigateToRentalReadyManagement={() => setCurrentView('rental-ready')}
     />;
   }
 

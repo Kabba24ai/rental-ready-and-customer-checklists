@@ -2,15 +2,21 @@ import React, { useState } from 'react';
 import { Settings, Database, FileText, Users, ArrowRight, ClipboardList } from 'lucide-react';
 import CustomerQuestionManager from './CustomerQuestionManager';
 import CustomerChecklistTemplateManager from './CustomerChecklistTemplateManager';
+import AdminNavigation from '../admin/AdminNavigation';
 
 interface CustomerAdminDashboardProps {
   onNavigateToRentalReady?: () => void;
   onNavigateToChecklistMaster?: () => void;
+  onNavigateToRentalReadyManagement?: () => void;
 }
 
 type CustomerAdminView = 'overview' | 'questions' | 'templates';
 
-const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({ onNavigateToRentalReady, onNavigateToChecklistMaster }) => {
+const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({ 
+  onNavigateToRentalReady, 
+  onNavigateToChecklistMaster,
+  onNavigateToRentalReadyManagement 
+}) => {
   const [currentView, setCurrentView] = useState<CustomerAdminView>('overview');
 
   const renderContent = () => {
@@ -129,6 +135,15 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({ onNavig
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Admin Navigation */}
+        <AdminNavigation
+          currentView="customer-admin"
+          onNavigateToChecklistMaster={onNavigateToChecklistMaster || (() => {})}
+          onNavigateToRentalReadyAdmin={onNavigateToRentalReady || (() => {})}
+          onNavigateToCustomerAdmin={() => {}} // Already on this screen
+          onNavigateToRentalReadyManagement={onNavigateToRentalReadyManagement || (() => {})}
+        />
+
         {renderContent()}
       </div>
     </div>
