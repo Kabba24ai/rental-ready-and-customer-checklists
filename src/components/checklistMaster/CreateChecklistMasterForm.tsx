@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, X, ClipboardList } from 'lucide-react';
+import { Save, X, ClipboardList, Settings, Users } from 'lucide-react';
 
 interface CreateChecklistMasterFormProps {
   onSave: (name: string) => void;
@@ -52,9 +52,35 @@ const CreateChecklistMasterForm: React.FC<CreateChecklistMasterFormProps> = ({
             <ClipboardList className="w-16 h-16 text-blue-600 mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Name Your Checklist System</h2>
             <p className="text-gray-600">
-              This will create a complete checklist system that includes both rental ready and customer checklists. 
-              The system can be assigned to multiple equipment items later.
+              Create a complete checklist system by selecting from existing templates.
             </p>
+          </div>
+
+          {/* Important Message */}
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-6 mb-6">
+            <h3 className="font-medium text-amber-900 mb-3">⚠️ Before You Continue</h3>
+            <p className="text-amber-800 mb-4">
+              You will need to select from existing Rental Ready and Customer Checklists. 
+              If you need to create a new Rental Ready or Customer Checklist, please do this now before creating a new Checklist System.
+            </p>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => window.open('#rental-ready-admin', '_blank')}
+                className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                <Settings className="w-4 h-4" />
+                Rental Ready Admin
+              </button>
+              <button
+                type="button"
+                onClick={() => window.open('#customer-admin', '_blank')}
+                className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                <Users className="w-4 h-4" />
+                Customer Admin
+              </button>
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
