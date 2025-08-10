@@ -101,7 +101,7 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({
                 Rental Ready Admin
               </button>
               <button
-                className="flex items-center gap-2 px-3 py-2 bg-purple-100 text-purple-700 rounded-lg text-sm font-medium"
+                className="flex items-center gap-2 px-3 py-2 bg-purple-100 text-purple-700 rounded-lg text-sm font-medium cursor-default"
               >
                 <Users className="w-4 h-4" />
                 Customer Checklist Admin
