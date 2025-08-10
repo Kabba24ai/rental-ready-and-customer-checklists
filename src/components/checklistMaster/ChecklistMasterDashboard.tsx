@@ -197,9 +197,6 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                         <div className="flex items-center">
                           <div>
                             <div className="text-sm font-medium text-gray-900">{system.name}</div>
-                            <div className="text-sm text-gray-500">
-                              Created {new Date(system.createdAt).toLocaleDateString()}
-                            </div>
                           </div>
                         </div>
                       </td>
