@@ -101,6 +101,7 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({
                 Rental Ready Admin
               </button>
               <button
+               onClick={() => setCurrentView('overview')}
                 className="flex items-center gap-2 px-3 py-2 bg-purple-100 text-purple-700 rounded-lg text-sm font-medium"
               >
                 <Users className="w-4 h-4" />
