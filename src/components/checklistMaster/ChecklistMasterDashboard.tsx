@@ -22,7 +22,6 @@ import { ChecklistMasterSystemWithCounts } from '../../types/checklistMaster';
 import { mockChecklistMasterSystems } from '../../data/checklistMasterMockData';
 import { mockChecklistTemplates } from '../../data/adminMockData';
 import { mockCustomerChecklistTemplates } from '../../data/customerAdminMockData';
-import AdminNavigation from '../admin/AdminNavigation';
 
 interface ChecklistMasterDashboardProps {
   onCreateNew: () => void;
@@ -166,15 +165,6 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* AdminNavigation Component */}
-        <AdminNavigation
-          currentView="checklist-master"
-          onNavigateToChecklistMaster={() => {}} // Already on this page
-          onNavigateToRentalReadyAdmin={onNavigateToRentalReady}
-          onNavigateToCustomerAdmin={onNavigateToCustomerAdmin}
-          onNavigateToEquipmentManagement={onNavigateToEquipmentManagement}
-        />
-
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -366,21 +356,6 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
       </div>
     </div>
   );
-
-  const handleDuplicateSystem = (systemId: string) => {
-    const systemToDuplicate = systems.find(s => s.id === systemId);
-    if (systemToDuplicate) {
-      const newSystem = {
-        ...systemToDuplicate,
-        id: `cms-${Date.now()}`,
-        name: `${systemToDuplicate.name} (Copy)`,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-      setSystems(prev => [...prev, newSystem]);
-      showSuccessMessage('Checklist system duplicated successfully!');
-    }
-  };
 };
 
 export default ChecklistMasterDashboard;
