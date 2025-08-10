@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Plus, Edit, Trash2, CheckCircle, Settings, ClipboardList } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, CheckCircle, Settings, ClipboardList, Filter } from 'lucide-react';
 import { ChecklistMasterSystemWithCounts } from '../../types/checklistMaster';
 import { mockChecklistMasterSystems } from '../../data/checklistMasterMockData';
 import { mockChecklistTemplates } from '../../data/adminMockData';
@@ -22,6 +22,7 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
   onNavigateToEquipmentManagement
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
   const [successMessage, setSuccessMessage] = useState<string>('');
 
   const showSuccessMessage = (message: string) => {
@@ -42,8 +43,12 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
   });
 
   const filteredSystems = systemsWithCounts.filter(system =>
-    system.name.toLowerCase().includes(searchTerm.toLowerCase())
+    system.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    (!categoryFilter || system.category === categoryFilter)
   );
+
+  // Get unique categories for filter dropdown
+  const categories = Array.from(new Set(systemsWithCounts.map(system => system.category))).sort();
 
   const handleDeleteSystem = (systemId: string) => {
     if (confirm('Are you sure you want to delete this checklist system?')) {
@@ -107,15 +112,40 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
 
         {/* Search */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search checklist systems..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Search Systems</label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search checklist systems..."
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Category</label>
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">All Categories</option>
+                {categories.map(category => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Results</label>
+              <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-gray-700">
+                <Filter className="w-4 h-4 text-gray-400" />
+                <span className="text-sm">{filteredSystems.length} of {systemsWithCounts.length} systems</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -147,6 +177,9 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                       Checklist System Name
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Category
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Rental Ready
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -169,6 +202,11 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                             </div>
                           </div>
                         </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                          {system.category}
+                        </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {system.rentalReadyTemplateId ? (
