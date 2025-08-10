@@ -3,7 +3,6 @@ import { Settings, Database, FileText, Users, ArrowRight, ClipboardList } from '
 import CustomerQuestionManager from './CustomerQuestionManager';
 import CustomerChecklistTemplateManager from './CustomerChecklistTemplateManager';
 import AdminNavigation from '../admin/AdminNavigation';
-import AdminDashboard from '../admin/AdminDashboard';
 
 interface CustomerAdminDashboardProps {
   onNavigateToRentalReady?: () => void;
@@ -79,34 +78,56 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <button
-                onClick={onNavigateToChecklistMaster}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-              >
-                <ClipboardList className="w-4 h-4" />
-                Checklist Master
-              </button>
-              <button
-                onClick={onNavigateToEquipmentManagement}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-              >
-                <ClipboardList className="w-4 h-4" />
-                Equipment Mgt.
-              </button>
-              <button
-                onClick={onNavigateToRentalReady}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-              >
-                <Settings className="w-4 h-4" />
-                Rental Ready Admin
-              </button>
-              <button
-               onClick={() => setCurrentView('overview')}
-                className="flex items-center gap-2 px-3 py-2 bg-purple-100 text-purple-700 rounded-lg text-sm font-medium"
-              >
-                <Users className="w-4 h-4" />
-                Customer Checklist Admin
-              </button>
+              <nav className="flex gap-1">
+                <button
+                  onClick={() => setCurrentView('overview')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentView === 'overview'
+                      ? 'bg-purple-100 text-purple-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  Overview
+                </button>
+                <button
+                  onClick={() => setCurrentView('questions')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentView === 'questions'
+                      ? 'bg-purple-100 text-purple-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  Questions & Categories
+                </button>
+                <button
+                  onClick={() => setCurrentView('templates')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentView === 'templates'
+                      ? 'bg-purple-100 text-purple-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  Templates
+                </button>
+              </nav>
+              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-200">
+                <button
+                  onClick={onNavigateToChecklistMaster}
+                  className="flex items-center gap-2 px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors text-sm font-medium"
+                  title="Go to Checklist Master Dashboard"
+                >
+                  <ClipboardList className="w-4 h-4" />
+                  Checklist Master
+                </button>
+                <button
+                  onClick={onNavigateToRentalReady}
+                  className="flex items-center gap-2 px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors text-sm font-medium"
+                  title="Go to Rental Ready Admin Dashboard"
+                >
+                  <ClipboardList className="w-4 h-4" />
+                  Rental Ready Admin
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -114,41 +135,14 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Sub Navigation */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-          <div className="flex gap-2">
-            <button
-              onClick={() => setCurrentView('overview')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                currentView === 'overview'
-                  ? 'bg-purple-100 text-purple-700'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              }`}
-            >
-              Overview
-            </button>
-            <button
-              onClick={() => setCurrentView('questions')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                currentView === 'questions'
-                  ? 'bg-purple-100 text-purple-700'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              }`}
-            >
-              Questions & Categories
-            </button>
-            <button
-              onClick={() => setCurrentView('templates')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                currentView === 'templates'
-                  ? 'bg-purple-100 text-purple-700'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              }`}
-            >
-              Templates
-            </button>
-          </div>
-        </div>
+        {/* Admin Navigation */}
+        <AdminNavigation
+          currentView="rental-ready-admin"
+          onNavigateToChecklistMaster={onNavigateToChecklistMaster || (() => {})}
+          onNavigateToRentalReadyAdmin={() => {}} // Already on this screen
+          onNavigateToCustomerAdmin={onNavigateToCustomerAdmin || (() => {})}
+          onNavigateToRentalReadyManagement={onNavigateToEquipmentManagement || (() => {})}
+        />
 
         {renderContent()}
       </div>

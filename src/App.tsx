@@ -227,73 +227,32 @@ function App() {
               </div>
               <div className="flex items-center gap-4">
                 <button
-                  onClick={() => setCurrentView('checklist-master')}
-                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-                >
-                  <ClipboardList className="w-4 h-4" />
-                  Checklist Mgt.
-                </button>
-                <button
-                  onClick={() => setCurrentView('customer-admin')}
-                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-                >
-                  <Users className="w-4 h-4" />
-                  Customer Admin
-                </button>
-                <button
-                  onClick={() => setCurrentView('customer-admin')}
+                  onClick={() => setCurrentView('customer-delivery')}
                   className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                 >
-                  <Users className="w-4 h-4" />
-                  <span className="text-sm font-medium">Customer Admin</span>
+                  <Truck className="w-4 h-4" />
+                  <span className="text-sm font-medium">Customer Delivery</span>
+                </button>
+                <button
+                  onClick={() => setCurrentView('customer-return')}
+                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <Package className="w-4 h-4" />
+                  <span className="text-sm font-medium">Customer Return</span>
                 </button>
                 <button
                   onClick={() => setCurrentView('rental-ready')}
-                  className="flex items-center gap-2 px-3 py-2 bg-green-100 text-green-700 rounded-lg text-sm font-medium"
+                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   <ClipboardList className="w-4 h-4" />
-                  Equipment Mgt.
-                </button>
-                <button
-                  onClick={() => setCurrentView('admin')}
-                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-                >
-                  <Settings className="w-4 h-4" />
-                  Rental Ready Admin
-                </button>
-                <button
-                  onClick={() => setCurrentView('customer-admin')}
-                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-                >
-                  <Users className="w-4 h-4" />
-                  Customer Checklist Admin
+                  <span className="text-sm font-medium">Equipment Mgt</span>
                 </button>
                 <button
                   onClick={() => setCurrentView('checklist-master')}
-                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
+                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   <ClipboardList className="w-4 h-4" />
-                  Checklist Master
-                </button>
-                <button
-                  className="flex items-center gap-2 px-3 py-2 bg-green-100 text-green-700 rounded-lg text-sm font-medium"
-                >
-                  <ClipboardList className="w-4 h-4" />
-                  Equipment Mgt.
-                </button>
-                <button
-                  onClick={() => setCurrentView('admin')}
-                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-                >
-                  <Settings className="w-4 h-4" />
-                  Rental Ready Admin
-                </button>
-                <button
-                  onClick={() => setCurrentView('customer-admin')}
-                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-                >
-                  <Users className="w-4 h-4" />
-                  Customer Checklist Admin
+                  <span className="text-sm font-medium">Checklist Mgt.</span>
                 </button>
               </div>
             </div>

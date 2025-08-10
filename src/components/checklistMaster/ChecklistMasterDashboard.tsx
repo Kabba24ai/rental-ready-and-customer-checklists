@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Search, Plus, Edit, Trash2, CheckCircle, Settings, ClipboardList, Users } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, CheckCircle, Settings, ClipboardList } from 'lucide-react';
 import { ChecklistMasterSystemWithCounts } from '../../types/checklistMaster';
 import { mockChecklistMasterSystems } from '../../data/checklistMasterMockData';
 import { mockChecklistTemplates } from '../../data/adminMockData';
 import { mockCustomerChecklistTemplates } from '../../data/customerAdminMockData';
+import AdminNavigation from '../admin/AdminNavigation';
 
 interface ChecklistMasterDashboardProps {
   onCreateNew: () => void;
@@ -64,41 +65,21 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                 <p className="text-sm text-gray-600">Manage complete checklist systems for equipment</p>
               </div>
             </div>
-            <div className="flex items-center gap-4">
-              <button
-                className="flex items-center gap-2 px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium"
-              >
-                <ClipboardList className="w-4 h-4" />
-                Checklist Master
-              </button>
-              <button
-                onClick={onNavigateToEquipmentManagement}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-              >
-                <ClipboardList className="w-4 h-4" />
-                Equipment Mgt.
-              </button>
-              <button
-                onClick={onNavigateToRentalReady}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-              >
-                <Settings className="w-4 h-4" />
-                Rental Ready Admin
-              </button>
-              <button
-                onClick={onNavigateToCustomerAdmin}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-              >
-                <Users className="w-4 h-4" />
-                Customer Checklist Admin
-              </button>
-            </div>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Admin Navigation */}
+        <AdminNavigation
+          currentView="checklist-master"
+          onNavigateToChecklistMaster={() => {}} // Already on this screen
+          onNavigateToRentalReadyAdmin={onNavigateToRentalReady}
+          onNavigateToCustomerAdmin={onNavigateToCustomerAdmin}
+          onNavigateToRentalReadyManagement={onNavigateToEquipmentManagement}
+        />
+
         {/* Success Message */}
         {successMessage && (
           <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
