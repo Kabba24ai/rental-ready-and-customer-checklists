@@ -4,7 +4,6 @@ import { ChecklistMasterSystemWithCounts } from '../../types/checklistMaster';
 import { mockChecklistMasterSystems } from '../../data/checklistMasterMockData';
 import { mockChecklistTemplates } from '../../data/adminMockData';
 import { mockCustomerChecklistTemplates } from '../../data/customerAdminMockData';
-import AdminNavigation from '../admin/AdminNavigation';
 
 interface ChecklistMasterDashboardProps {
   onCreateNew: () => void;
@@ -100,15 +99,6 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Admin Navigation */}
-        <AdminNavigation
-          currentView="checklist-master"
-          onNavigateToChecklistMaster={() => {}} // Already on this screen
-          onNavigateToRentalReadyAdmin={onNavigateToRentalReady}
-          onNavigateToCustomerAdmin={onNavigateToCustomerAdmin}
-          onNavigateToEquipmentManagement={onNavigateToEquipmentManagement}
-        />
-
         {/* Success Message */}
         {successMessage && (
           <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
