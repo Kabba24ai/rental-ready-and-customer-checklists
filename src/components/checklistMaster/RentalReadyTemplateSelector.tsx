@@ -127,15 +127,8 @@ const RentalReadyTemplateSelector: React.FC<RentalReadyTemplateSelectorProps> = 
           <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">No Templates Found</h3>
           <p className="text-gray-600 mb-4">
-            {searchTerm ? 'No templates match your search.' : 'No rental ready templates available.'}
+            {searchTerm || categoryFilter ? 'No templates match your search criteria.' : 'No rental ready templates available.'}
           </p>
-          <button
-            onClick={() => setShowCreateNew(true)}
-            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors mx-auto"
-          >
-            <Plus className="w-4 h-4" />
-            Create First Template
-          </button>
         </div>
       )}
 
