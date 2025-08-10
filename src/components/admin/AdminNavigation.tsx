@@ -1,20 +1,26 @@
 import React from 'react';
 import { ClipboardList, Settings, Users, FileText, Database } from 'lucide-react';
 
+export type AdminNavView =
+  | 'checklist-master'
+  | 'rental-ready-admin'
+  | 'customer-admin'
+  | 'rental-ready';
+
 interface AdminNavigationProps {
-  currentView: 'checklist-master' | 'rental-ready-admin' | 'customer-admin' | 'rental-ready-management';
+  currentView: AdminNavView;
   onNavigateToChecklistMaster: () => void;
-  onNavigateToRentalReadyAdmin: () => void;
+  onNavigateToRentalReady: () => void; // renamed for consistency
   onNavigateToCustomerAdmin: () => void;
-  onNavigateToRentalReadyManagement: () => void;
+  onNavigateToEquipmentManagement: () => void;
 }
 
 const AdminNavigation: React.FC<AdminNavigationProps> = ({
   currentView,
   onNavigateToChecklistMaster,
-  onNavigateToRentalReadyAdmin,
+  onNavigateToRentalReady,
   onNavigateToCustomerAdmin,
-  onNavigateToRentalReadyManagement
+  onNavigateToEquipmentManagement,
 }) => {
   const navItems = [
     {
@@ -23,7 +29,7 @@ const AdminNavigation: React.FC<AdminNavigationProps> = ({
       description: 'Manage checklist systems',
       icon: ClipboardList,
       color: 'blue',
-      onClick: onNavigateToChecklistMaster
+      onClick: onNavigateToChecklistMaster,
     },
     {
       id: 'rental-ready-admin',
@@ -31,7 +37,7 @@ const AdminNavigation: React.FC<AdminNavigationProps> = ({
       description: 'Questions & templates',
       icon: Settings,
       color: 'green',
-      onClick: onNavigateToRentalReadyAdmin
+      onClick: onNavigateToRentalReady,
     },
     {
       id: 'customer-admin',
@@ -39,37 +45,39 @@ const AdminNavigation: React.FC<AdminNavigationProps> = ({
       description: 'Delivery & return checklists',
       icon: Users,
       color: 'purple',
-      onClick: onNavigateToCustomerAdmin
+      onClick: onNavigateToCustomerAdmin,
     },
     {
-      id: 'rental-ready-management',
+      id: 'rental-ready', // align with App view key
       label: 'Equipment Mgt.',
       description: 'Equipment inspections',
       icon: FileText,
       color: 'indigo',
-      onClick: onNavigateToRentalReadyManagement
-    }
-  ];
+      onClick: onNavigateToEquipmentManagement,
+    },
+  ] as const;
 
   const getButtonStyles = (itemId: string, color: string) => {
     const isActive = currentView === itemId;
-    
-    const colorStyles = {
-      blue: isActive 
-        ? 'bg-blue-100 border-blue-300 text-blue-800' 
+
+    const colorStyles: Record<string, string> = {
+      blue: isActive
+        ? 'bg-blue-100 border-blue-300 text-blue-800'
         : 'border-gray-200 text-gray-600 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700',
-      green: isActive 
-        ? 'bg-green-100 border-green-300 text-green-800' 
+      green: isActive
+        ? 'bg-green-100 border-green-300 text-green-800'
         : 'border-gray-200 text-gray-600 hover:bg-green-50 hover:border-green-200 hover:text-green-700',
-      purple: isActive 
-        ? 'bg-purple-100 border-purple-300 text-purple-800' 
+      purple: isActive
+        ? 'bg-purple-100 border-purple-300 text-purple-800'
         : 'border-gray-200 text-gray-600 hover:bg-purple-50 hover:border-purple-200 hover:text-purple-700',
-      indigo: isActive 
-        ? 'bg-indigo-100 border-indigo-300 text-indigo-800' 
-        : 'border-gray-200 text-gray-600 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-700'
+      indigo: isActive
+        ? 'bg-indigo-100 border-indigo-300 text-indigo-800'
+        : 'border-gray-200 text-gray-600 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-700',
     };
 
-    return `flex items-center gap-3 px-4 py-3 rounded-lg border-2 transition-all duration-200 ${colorStyles[color as keyof typeof colorStyles]}`;
+    return `flex items-center gap-3 px-4 py-3 rounded-lg border-2 transition-all duration-200 ${
+      colorStyles[color]
+    }`;
   };
 
   return (
@@ -81,7 +89,7 @@ const AdminNavigation: React.FC<AdminNavigationProps> = ({
           <p className="text-sm text-gray-600">Navigate between admin screens</p>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -91,7 +99,9 @@ const AdminNavigation: React.FC<AdminNavigationProps> = ({
               key={item.id}
               onClick={item.onClick}
               disabled={isActive}
-              className={`${getButtonStyles(item.id, item.color)} ${isActive ? 'cursor-default' : 'cursor-pointer'}`}
+              className={`${getButtonStyles(item.id, item.color)} ${
+                isActive ? 'cursor-default' : 'cursor-pointer'
+              }`}
             >
               <Icon className="w-5 h-5 flex-shrink-0" />
               <div className="text-left">

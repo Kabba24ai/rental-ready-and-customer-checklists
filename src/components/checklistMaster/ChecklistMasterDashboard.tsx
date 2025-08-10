@@ -75,9 +75,9 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
         <AdminNavigation
           currentView="checklist-master"
           onNavigateToChecklistMaster={() => {}} // Already on this screen
-          onNavigateToRentalReadyAdmin={onNavigateToRentalReady}
+          onNavigateToRentalReady={onNavigateToRentalReady}
           onNavigateToCustomerAdmin={onNavigateToCustomerAdmin}
-          onNavigateToRentalReadyManagement={onNavigateToEquipmentManagement}
+          onNavigateToEquipmentManagement={onNavigateToEquipmentManagement}
         />
 
         {/* Success Message */}
