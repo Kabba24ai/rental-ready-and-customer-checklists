@@ -9,6 +9,7 @@
 export interface ChecklistMasterSystem {
   id: string;
   name: string;
+  category: string;
   rentalReadyTemplateId?: string;
   customerTemplateId?: string;
   createdAt: string;
