@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Settings, Database, FileText, Plus, Search, Users, ArrowRight, ClipboardList } from 'lucide-react';
-import QuestionManager from './QuestionManager';
-import ChecklistTemplateManager from './ChecklistTemplateManager';
+import QuestionManager from '../admin/QuestionManager';
+import ChecklistTemplateManager from '../admin/ChecklistTemplateManager';
 import AdminNavigation from './AdminNavigation';
 
 interface AdminDashboardProps {
