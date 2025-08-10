@@ -124,7 +124,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   Checklist Master
                 </button>
                 <button
-                <button
                   onClick={onNavigateToEquipmentManagement}
                   className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
                 >
