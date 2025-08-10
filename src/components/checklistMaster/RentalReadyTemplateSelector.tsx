@@ -43,23 +43,6 @@ const RentalReadyTemplateSelector: React.FC<RentalReadyTemplateSelectorProps> = 
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-gray-900">Select Rental Ready Template</h3>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setShowCreateNew(true)}
-            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-          >
-            <Plus className="w-4 h-4" />
-            Create New Template
-          </button>
-          {onCancelToCreateTemplate && (
-            <button
-              onClick={onCancelToCreateTemplate}
-              className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-            >
-              Cancel New Checklist and Create Rental Ready Template
-            </button>
-          )}
-        </div>
       </div>
 
       {/* Search */}
@@ -144,6 +127,19 @@ const RentalReadyTemplateSelector: React.FC<RentalReadyTemplateSelectorProps> = 
             This template will be assigned to your checklist system for rental ready inspections.
           </p>
         </div>
+      )}
+
+      {/* Bottom Navigation */}
+      <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+        {onCancelToCreateTemplate && (
+          <button
+            onClick={onCancelToCreateTemplate}
+            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+          >
+            Cancel New Checklist and Create Rental Ready Template
+          </button>
+        )}
+        <div className="flex-1"></div>
       )}
     </div>
   );

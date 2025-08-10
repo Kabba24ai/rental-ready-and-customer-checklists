@@ -75,7 +75,13 @@ const GuidedChecklistWorkflow: React.FC<GuidedChecklistWorkflowProps> = ({
               onTemplateSelect={setSelectedRentalReadyTemplate}
               onCancelToCreateTemplate={onCancel}
             />
-            <div className="flex justify-end">
+            <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+              <button
+                onClick={onCancel}
+                className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                Cancel New Checklist and Create Rental Ready Template
+              </button>
               <button
                 onClick={() => selectedRentalReadyTemplate && handleStepComplete(2)}
                 disabled={!selectedRentalReadyTemplate}
@@ -105,7 +111,13 @@ const GuidedChecklistWorkflow: React.FC<GuidedChecklistWorkflowProps> = ({
               onTemplateSelect={setSelectedCustomerTemplate}
               onCancelToCreateTemplate={onCancel}
             />
-            <div className="flex justify-end">
+            <div className="flex items-center justify-between pt-6 border-t border-gray-200">
+              <button
+                onClick={onCancel}
+                className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                Cancel New Checklist and Create Customer Checklist Template
+              </button>
               <button
                 onClick={() => selectedCustomerTemplate && handleStepComplete(3)}
                 disabled={!selectedCustomerTemplate}
