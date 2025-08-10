@@ -120,6 +120,13 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({
                   Checklist Master
                 </button>
                 <button
+                  onClick={onNavigateToEquipmentManagement}
+                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
+                >
+                  <FileText className="w-4 h-4" />
+                  Equipment Mgt.
+                </button>
+                <button
                   onClick={onNavigateToRentalReady}
                   className="flex items-center gap-2 px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors text-sm font-medium"
                   title="Go to Rental Ready Admin"
