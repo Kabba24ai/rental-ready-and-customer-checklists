@@ -231,7 +231,14 @@ function App() {
                   className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
                 >
                   <ClipboardList className="w-4 h-4" />
-                  Checklist Master
+                  Checklist Mgt.
+                </button>
+                <button
+                  onClick={() => setCurrentView('customer-admin')}
+                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
+                >
+                  <Users className="w-4 h-4" />
+                  Customer Admin
                 </button>
                 <button
                   onClick={() => setCurrentView('rental-ready')}
