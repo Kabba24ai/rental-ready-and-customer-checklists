@@ -153,6 +153,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {renderContent()}
       </div>
     </div>
+  )
   );
 };
 
