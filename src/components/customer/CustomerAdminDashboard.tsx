@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Settings, Database, FileText, Plus, Search, Users, ArrowRight, ClipboardList } from 'lucide-react';
+import { Settings, Database, FileText, Users, ArrowRight, ClipboardList } from 'lucide-react';
 import CustomerQuestionManager from './CustomerQuestionManager';
 import CustomerChecklistTemplateManager from './CustomerChecklistTemplateManager';
+import AdminNavigation from '../admin/AdminNavigation';
 
 interface CustomerAdminDashboardProps {
   onNavigateToRentalReady?: () => void;
@@ -9,14 +10,14 @@ interface CustomerAdminDashboardProps {
   onNavigateToEquipmentManagement?: () => void;
 }
 
-type AdminView = 'overview' | 'questions' | 'templates';
+type CustomerAdminView = 'overview' | 'questions' | 'templates';
 
 const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({ 
   onNavigateToRentalReady, 
-  onNavigateToChecklistMaster, 
+  onNavigateToChecklistMaster,
   onNavigateToEquipmentManagement 
 }) => {
-  const [currentView, setCurrentView] = useState<AdminView>('overview');
+  const [currentView, setCurrentView] = useState<CustomerAdminView>('overview');
 
   const renderContent = () => {
     switch (currentView) {
@@ -33,7 +34,7 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({
                 <h3 className="text-lg font-semibold text-gray-900">Customer Questions & Categories</h3>
               </div>
               <p className="text-gray-600 mb-4">
-                Create and manage delivery/return questions with cost calculations. Define answer options with pricing.
+                Create and manage customer checklist questions with delivery/return text variations and pricing.
               </p>
               <button
                 onClick={() => setCurrentView('questions')}
@@ -49,7 +50,7 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({
                 <h3 className="text-lg font-semibold text-gray-900">Customer Checklist Templates</h3>
               </div>
               <p className="text-gray-600 mb-4">
-                Build delivery/return checklist templates by selecting and ordering customer questions for different equipment categories.
+                Build delivery/return checklist templates for different equipment categories with pricing.
               </p>
               <button
                 onClick={() => setCurrentView('templates')}
@@ -73,38 +74,60 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({
               <Users className="w-8 h-8 text-purple-600" />
               <div>
                 <h1 className="text-xl font-semibold text-gray-900">Customer Checklist Admin</h1>
-                <p className="text-sm text-gray-600">Manage customer delivery/return questions and templates</p>
+                <p className="text-sm text-gray-600">Delivery & Return Checklist Management</p>
               </div>
             </div>
-            <div className="flex items-center gap-1">
-              <button
-                onClick={onNavigateToChecklistMaster}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-              >
-                <ClipboardList className="w-4 h-4" />
-                Checklist Master
-              </button>
-              <div className="w-px h-6 bg-gray-300 mx-1"></div>
-              <button
-                onClick={onNavigateToEquipmentManagement}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-              >
-                <FileText className="w-4 h-4" />
-                Equipment Mgt.
-              </button>
-              <button
-                onClick={onNavigateToRentalReady}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-              >
-                <Settings className="w-4 h-4" />
-                Rental Ready Admin
-              </button>
-              <button
-                className="flex items-center gap-2 px-3 py-2 bg-purple-100 text-purple-700 rounded-lg text-sm font-medium cursor-default"
-              >
-                <Users className="w-4 h-4" />
-                Customer Checklist Admin
-              </button>
+            <div className="flex items-center gap-4">
+              <nav className="flex gap-1">
+                <button
+                  onClick={() => setCurrentView('overview')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentView === 'overview'
+                      ? 'bg-purple-100 text-purple-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  Overview
+                </button>
+                <button
+                  onClick={() => setCurrentView('questions')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentView === 'questions'
+                      ? 'bg-purple-100 text-purple-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  Questions & Categories
+                </button>
+                <button
+                  onClick={() => setCurrentView('templates')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    currentView === 'templates'
+                      ? 'bg-purple-100 text-purple-700'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  Templates
+                </button>
+              </nav>
+              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-200">
+                <button
+                  onClick={onNavigateToChecklistMaster}
+                  className="flex items-center gap-2 px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors text-sm font-medium"
+                  title="Go to Checklist Master Dashboard"
+                >
+                  <ClipboardList className="w-4 h-4" />
+                  Checklist Master
+                </button>
+                <button
+                  onClick={onNavigateToRentalReady}
+                  className="flex items-center gap-2 px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors text-sm font-medium"
+                  title="Go to Rental Ready Admin Dashboard"
+                >
+                  <ClipboardList className="w-4 h-4" />
+                  Rental Ready Admin
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -112,49 +135,14 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Sub-navigation for this page */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-          <div className="flex items-center gap-3 mb-4">
-            <Users className="w-6 h-6 text-purple-600" />
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">Customer Checklist Admin</h3>
-              <p className="text-sm text-gray-600">Manage delivery/return questions, categories, and templates</p>
-            </div>
-          </div>
-          
-          <div className="flex gap-2">
-            <button
-              onClick={() => setCurrentView('overview')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                currentView === 'overview'
-                  ? 'bg-purple-100 text-purple-700'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              }`}
-            >
-              Overview
-            </button>
-            <button
-              onClick={() => setCurrentView('questions')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                currentView === 'questions'
-                  ? 'bg-purple-100 text-purple-700'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              }`}
-            >
-              Questions & Categories
-            </button>
-            <button
-              onClick={() => setCurrentView('templates')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                currentView === 'templates'
-                  ? 'bg-purple-100 text-purple-700'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-              }`}
-            >
-              Templates
-            </button>
-          </div>
-        </div>
+        {/* Admin Navigation */}
+        <AdminNavigation
+          currentView="rental-ready-admin"
+          onNavigateToChecklistMaster={onNavigateToChecklistMaster || (() => {})}
+          onNavigateToRentalReadyAdmin={() => {}} // Already on this screen
+          onNavigateToCustomerAdmin={onNavigateToCustomerAdmin || (() => {})}
+          onNavigateToEquipmentManagement={onNavigateToEquipmentManagement || (() => {})}
+        />
 
         {renderContent()}
       </div>
@@ -162,4 +150,4 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({
   );
 };
 
-export default CustomerAdminDashboard;
+export default AdminDashboard;

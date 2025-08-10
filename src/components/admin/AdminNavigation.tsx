@@ -47,7 +47,7 @@ const AdminNavigation: React.FC<AdminNavigationProps> = ({
       description: 'Equipment inspections',
       icon: FileText,
       color: 'indigo',
-      onClick: () => onNavigateToEquipmentManagement()
+      onClick: onNavigateToEquipmentManagement
     }
   ];
 
