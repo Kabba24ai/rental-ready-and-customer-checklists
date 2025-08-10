@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Plus, Edit, Trash2, CheckCircle, Settings, ClipboardList } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, CheckCircle, Settings, ClipboardList, Users, FileText } from 'lucide-react';
 import { ChecklistMasterSystemWithCounts } from '../../types/checklistMaster';
 import { mockChecklistMasterSystems } from '../../data/checklistMasterMockData';
 import { mockChecklistTemplates } from '../../data/adminMockData';
