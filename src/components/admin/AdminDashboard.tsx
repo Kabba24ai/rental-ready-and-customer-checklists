@@ -66,7 +66,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </>
         );
     }
-    setCurrentView('admin');
   };
 
   return (
@@ -152,7 +151,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
         {renderContent()}
       </div>
     </div>
-  )
   );
 };
 

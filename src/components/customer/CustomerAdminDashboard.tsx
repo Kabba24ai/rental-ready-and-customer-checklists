@@ -147,7 +147,6 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({
         {renderContent()}
       </div>
     </div>
-  )
   );
 };
 
