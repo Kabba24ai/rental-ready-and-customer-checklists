@@ -171,34 +171,21 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                 <p className="text-sm text-gray-600">Manage and organize your checklist systems</p>
               </div>
             </div>
-            <div className="flex items-center gap-1">
-              <button
-                className="flex items-center gap-2 px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium cursor-default"
-              >
-                <ClipboardList className="w-4 h-4" />
-                Checklist Master
+            <div className="flex items-center gap-3">
+              <button className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                <Download className="w-4 h-4" />
+                <span className="text-sm font-medium">Export</span>
               </button>
-              <div className="w-px h-6 bg-gray-300 mx-1"></div>
-              <button
-                onClick={onNavigateToEquipmentManagement}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-              >
-                <FileText className="w-4 h-4" />
-                Equipment Mgt.
+              <button className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                <Upload className="w-4 h-4" />
+                <span className="text-sm font-medium">Import</span>
               </button>
-              <button
-                onClick={onNavigateToRentalReady}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
+              <button 
+                onClick={onCreateNew}
+                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
               >
-                <Settings className="w-4 h-4" />
-                Rental Ready Admin
-              </button>
-              <button
-                onClick={onNavigateToCustomerAdmin}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-              >
-                <Users className="w-4 h-4" />
-                Customer Checklist Admin
+                <Plus className="w-4 h-4" />
+                Create System
               </button>
             </div>
           </div>
@@ -206,7 +193,16 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Admin Navigation */}
+        <AdminNavigation
+          currentView="checklist-master"
+          onNavigateToChecklistMaster={() => {}}
+          onNavigateToRentalReadyAdmin={onNavigateToRentalReady}
+          onNavigateToCustomerAdmin={onNavigateToCustomerAdmin}
+          onNavigateToEquipmentManagement={onNavigateToEquipmentManagement}
+        />
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -355,14 +351,6 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                 <option value="questions-desc">Most Questions</option>
                 <option value="questions-asc">Fewest Questions</option>
               </select>
-
-              <button
-                onClick={onCreateNew}
-                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
-              >
-                <Plus className="w-4 h-4" />
-                Create System
-              </button>
             </div>
           </div>
 
@@ -536,6 +524,10 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                       <Edit className="w-4 h-4" />
                       Edit
                     </button>
+                    <button className="flex items-center justify-center gap-2 px-3 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg text-sm font-medium transition-colors">
+                      <Eye className="w-4 h-4" />
+                      View
+                    </button>
                     <button 
                       onClick={() => handleDuplicateSystem(system.id)}
                       className="flex items-center justify-center gap-2 px-3 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg text-sm font-medium transition-colors"
@@ -631,6 +623,9 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                             className="text-blue-600 hover:text-blue-900 p-1 hover:bg-blue-50 rounded transition-colors"
                           >
                             <Edit className="w-4 h-4" />
+                          </button>
+                          <button className="text-gray-600 hover:text-gray-900 p-1 hover:bg-gray-50 rounded transition-colors">
+                            <Eye className="w-4 h-4" />
                           </button>
                           <button 
                             onClick={() => handleDuplicateSystem(system.id)}
