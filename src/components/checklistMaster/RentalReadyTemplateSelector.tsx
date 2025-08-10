@@ -140,7 +140,7 @@ const RentalReadyTemplateSelector: React.FC<RentalReadyTemplateSelectorProps> = 
           </button>
         )}
         <div className="flex-1"></div>
-      )}
+      </div>
     </div>
   );
 };
