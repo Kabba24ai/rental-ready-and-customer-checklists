@@ -1,441 +1,159 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Settings, Database, FileText, Plus, Search, Users, ArrowRight, ClipboardList } from 'lucide-react';
+import QuestionManager from './QuestionManager';
+import ChecklistTemplateManager from './ChecklistTemplateManager';
+import AdminNavigation from './AdminNavigation';
 
-/**
- * Main Application Component
- * 
- * Root component implementing the IndexController pattern for the Rental Ready
- * Checklist System. Manages application-wide state, routing between different
- * views, and coordinates data flow between components.
- * 
- * Architecture:
- * - Follows Domain Driven Architecture with clear separation of concerns
- * - Implements Single Responsibility Controllers pattern
- * - Mobile-first design optimized for iPad/iPhone usage
- * 
- * Views:
- * - checklist: Main rental ready inspection interface
- * - admin: Administrative management dashboard
- * - customer-admin: Customer checklist management
- * - customer-delivery: Customer delivery checklist
- * - customer-return: Customer return checklist
- * 
- * State Management:
- * - Equipment inventory with status tracking
- * - Checklist progress and validation
- * - Inspector assignments and notes
- * - Success/error message handling
- */
-import { Equipment, ChecklistItem, RentalReadyChecklist } from './types/equipment';
-import { mockEquipment, getChecklistTemplate, mockInspectors } from './data/mockData';
-import EquipmentSelector from './components/EquipmentSelector';
-import ChecklistForm from './components/ChecklistForm';
-import AdminDashboard from './components/admin/AdminDashboard';
-import CustomerAdminDashboard from './components/customer/CustomerAdminDashboard';
-import CustomerDeliveryChecklist from './components/customer/CustomerDeliveryChecklist';
-import ChecklistMasterDashboard from './components/checklistMaster/ChecklistMasterDashboard';
-import CreateChecklistMasterForm from './components/checklistMaster/CreateChecklistMasterForm';
-import EditChecklistMasterForm from './components/checklistMaster/EditChecklistMasterForm';
-import GuidedChecklistWorkflow from './components/checklistMaster/GuidedChecklistWorkflow';
-import AdminNavigation from './components/admin/AdminNavigation';
-import { ClipboardList, Settings, Users, Truck, Package, FileText } from 'lucide-react';
-
-type AppView = 'checklist' | 'admin' | 'customer-admin' | 'customer-delivery' | 'customer-return' | 'checklist-master' | 'create-checklist-master' | 'edit-checklist-master' | 'rental-ready' | 'guided-workflow';
-
-function App() {
-  const [currentView, setCurrentView] = useState<AppView>('rental-ready');
-  const [equipment, setEquipment] = useState<Equipment[]>(mockEquipment);
-  const [selectedEquipment, setSelectedEquipment] = useState<Equipment | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [checklist, setChecklist] = useState<RentalReadyChecklist | null>(null);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [currentChecklistMasterName, setCurrentChecklistMasterName] = useState('');
-  const [editingSystemId, setEditingSystemId] = useState<string>('');
-
-  useEffect(() => {
-    if (selectedEquipment) {
-      const checklistItems = getChecklistTemplate(selectedEquipment.category);
-      setChecklist({
-        equipmentId: selectedEquipment.id,
-        inspectorName: '',
-        inspectionDate: new Date().toISOString().split('T')[0],
-        items: checklistItems,
-        overallStatus: 'Incomplete',
-        notes: '',
-        equipmentHours: selectedEquipment.hours || 0
-      });
-    }
-  }, [selectedEquipment]);
-
-  const handleUpdateItem = (itemId: string, updates: Partial<ChecklistItem>) => {
-    if (!checklist) return;
-    
-    setChecklist(prev => ({
-      ...prev!,
-      items: prev!.items.map(item => 
-        item.id === itemId ? { ...item, ...updates } : item
-      )
-    }));
-  };
-
-  const handleInspectorNameChange = (name: string) => {
-    if (!checklist) return;
-    setChecklist(prev => ({ ...prev!, inspectorName: name }));
-  };
-
-  const handleNotesChange = (notes: string) => {
-    if (!checklist) return;
-    setChecklist(prev => ({ ...prev!, notes }));
-  };
-
-  const handleEquipmentHoursChange = (hours: number) => {
-    if (!checklist) return;
-    setChecklist(prev => ({ ...prev!, equipmentHours: hours }));
-    
-    // Also update the equipment hours in the equipment list
-    setEquipment(prev => prev.map(eq => 
-      eq.id === selectedEquipment?.id ? { ...eq, hours } : eq
-    ));
-  };
-
-  const handleMarkRentalReady = () => {
-    if (!selectedEquipment || !checklist) return;
-    
-    // Update equipment status
-    setEquipment(prev => prev.map(eq => 
-      eq.id === selectedEquipment.id 
-        ? { 
-            ...eq, 
-            status: 'Available', 
-            lastInspection: new Date().toISOString().split('T')[0],
-            hours: checklist.equipmentHours || eq.hours
-          }
-        : eq
-    ));
-    
-    setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 3000);
-    
-    // Reset form
-    setSelectedEquipment(null);
-    setChecklist(null);
-  };
-
-  const handleMarkDamaged = () => {
-    if (!selectedEquipment || !checklist) return;
-    
-    // Update equipment status
-    setEquipment(prev => prev.map(eq => 
-      eq.id === selectedEquipment.id 
-        ? { 
-            ...eq, 
-            status: 'Damaged', 
-            lastInspection: new Date().toISOString().split('T')[0],
-            hours: checklist.equipmentHours || eq.hours
-          }
-        : eq
-    ));
-    
-    setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 3000);
-    
-    // Reset form
-    setSelectedEquipment(null);
-    setChecklist(null);
-  };
-
-  const handleSaveDraft = () => {
-    // In a real app, this would save to a database
-    console.log('Saving draft:', checklist);
-    setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 3000);
-  };
-
-  const handleCreateChecklistMaster = (name: string) => {
-    setCurrentChecklistMasterName(name);
-    setCurrentView('admin');
-  };
-
-  const handleEditChecklistMaster = (systemId: string) => {
-    setEditingSystemId(systemId);
-    setCurrentView('edit-checklist-master');
-  };
-
-  const handleUpdateChecklistMaster = (name: string) => {
-    // In a real app, this would update the system name in the database
-    console.log('Updating system', editingSystemId, 'to name:', name);
-    setCurrentView('checklist-master');
-  };
-
-  const handleNavigateToRentalReady = () => {
-    setCurrentView('admin');
-  };
-
-  const handleNavigateToCustomerAdmin = () => {
-    setCurrentView('customer-admin');
-  };
-
-  const handleCustomerChecklistComplete = (responses: any[], totalCost: number) => {
-    console.log('Customer checklist completed:', { responses, totalCost });
-    setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 3000);
-  };
-
-  if (currentView === 'checklist-master') {
-    return (
-      <ChecklistMasterDashboard
-        onCreateNew={() => setCurrentView('create-checklist-master')}
-        onEditSystem={handleEditChecklistMaster}
-        onNavigateToRentalReady={handleNavigateToRentalReady}
-        onNavigateToCustomerAdmin={handleNavigateToCustomerAdmin}
-        onNavigateToEquipmentManagement={() => setCurrentView('rental-ready')}
-      />
-    );
-  }
-
-  if (currentView === 'create-checklist-master') {
-    return (
-      <GuidedChecklistWorkflow
-        onComplete={handleCreateChecklistMaster}
-        onCancel={() => setCurrentView('checklist-master')}
-      />
-    );
-  }
-
-  if (currentView === 'edit-checklist-master') {
-    return (
-      <EditChecklistMasterForm
-        systemId={editingSystemId}
-        onSave={handleUpdateChecklistMaster}
-        onCancel={() => setCurrentView('checklist-master')}
-      />
-    );
-  }
-
-  if (currentView === 'rental-ready') {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="bg-white shadow-sm border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center gap-3">
-                <ClipboardList className="w-8 h-8 text-green-600" />
-                <div>
-                  <h1 className="text-xl font-semibold text-gray-900">Equipment Management</h1>
-                  <p className="text-sm text-gray-600">Equipment Inspection & Status Management</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => setCurrentView('checklist-master')}
-                    className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-                  >
-                    <ClipboardList className="w-4 h-4" />
-                    Checklist Master
-                  </button>
-                  <div className="w-px h-6 bg-gray-300 mx-1"></div>
-                  <button
-                    className="flex items-center gap-2 px-3 py-2 bg-green-100 text-green-700 rounded-lg text-sm font-medium cursor-default"
-                  >
-                    <FileText className="w-4 h-4" />
-                    Equipment Mgt.
-                  </button>
-                  <button
-                    onClick={() => setCurrentView('admin')}
-                    className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-                  >
-                    <Settings className="w-4 h-4" />
-                    Rental Ready Admin
-                  </button>
-                  <button
-                    onClick={() => setCurrentView('customer-admin')}
-                    className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-                  >
-                    <Users className="w-4 h-4" />
-                    Customer Checklist Admin
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Success Message */}
-        {showSuccess && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
-                </div>
-                <span className="text-green-800 font-medium">
-                  Equipment status updated successfully!
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Equipment Selector */}
-            <div className="lg:col-span-1">
-              <EquipmentSelector
-                equipment={equipment}
-                selectedEquipment={selectedEquipment}
-                onSelectEquipment={setSelectedEquipment}
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-              />
-            </div>
-
-            {/* Checklist Form */}
-            <div className="lg:col-span-2">
-              {selectedEquipment && checklist ? (
-                <ChecklistForm
-                  equipment={selectedEquipment}
-                  items={checklist.items}
-                  onUpdateItem={handleUpdateItem}
-                  inspectorName={checklist.inspectorName}
-                  onInspectorNameChange={handleInspectorNameChange}
-                  notes={checklist.notes || ''}
-                  onNotesChange={handleNotesChange}
-                  equipmentHours={checklist.equipmentHours || 0}
-                  onEquipmentHoursChange={handleEquipmentHoursChange}
-                  inspectors={mockInspectors}
-                  onMarkRentalReady={handleMarkRentalReady}
-                  onMarkDamaged={handleMarkDamaged}
-                  onSaveDraft={handleSaveDraft}
-                />
-              ) : (
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-                  <ClipboardList className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    Select Equipment to Begin
-                  </h3>
-                  <p className="text-gray-600">
-                    Choose equipment from the list to start the rental ready inspection process.
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (currentView === 'admin') {
-    return <AdminDashboard 
-      onNavigateToCustomerAdmin={() => setCurrentView('customer-admin')}
-      onNavigateToChecklistMaster={() => setCurrentView('checklist-master')}
-      onNavigateToRentalReady={() => setCurrentView('rental-ready')}
-      onNavigateToEquipmentManagement={() => setCurrentView('rental-ready')}
-    />;
-  }
-
-  if (currentView === 'customer-admin') {
-    return <CustomerAdminDashboard 
-      onNavigateToRentalReady={() => setCurrentView('admin')}
-      onNavigateToChecklistMaster={() => setCurrentView('checklist-master')}
-      onNavigateToEquipmentManagement={() => setCurrentView('rental-ready')}
-    />;
-  }
-
-  if (currentView === 'customer-delivery') {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="bg-white shadow-sm border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center gap-3">
-                <Truck className="w-8 h-8 text-blue-600" />
-                <div>
-                  <h1 className="text-xl font-semibold text-gray-900">Customer Delivery Checklist</h1>
-                  <p className="text-sm text-gray-600">Equipment Delivery Confirmation</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => setCurrentView('checklist')}
-                  className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <ClipboardList className="w-4 h-4" />
-                  <span className="text-sm font-medium">Back to Main</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Success Message */}
-        {showSuccess && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                  <div className="w-2 h-2 bg-white rounded-full"></div>
-                </div>
-                <span className="text-green-800 font-medium">
-                  Equipment status updated successfully!
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Equipment Selector */}
-            <div className="lg:col-span-1">
-              <EquipmentSelector
-                equipment={equipment}
-                selectedEquipment={selectedEquipment}
-                onSelectEquipment={setSelectedEquipment}
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-              />
-            </div>
-
-            {/* Checklist Form */}
-            <div className="lg:col-span-2">
-              {selectedEquipment && checklist ? (
-                <ChecklistForm
-                  equipment={selectedEquipment}
-                  items={checklist.items}
-                  onUpdateItem={handleUpdateItem}
-                  inspectorName={checklist.inspectorName}
-                  onInspectorNameChange={handleInspectorNameChange}
-                  notes={checklist.notes || ''}
-                  onNotesChange={handleNotesChange}
-                  equipmentHours={checklist.equipmentHours || 0}
-                  onEquipmentHoursChange={handleEquipmentHoursChange}
-                  inspectors={mockInspectors}
-                  onMarkRentalReady={handleMarkRentalReady}
-                  onMarkDamaged={handleMarkDamaged}
-                  onSaveDraft={handleSaveDraft}
-                />
-              ) : (
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-                  <ClipboardList className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    Select Equipment to Begin
-                  </h3>
-                  <p className="text-gray-600">
-                    Choose equipment from the list to start the rental ready inspection process.
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+interface AdminDashboardProps {
+  onNavigateToCustomerAdmin?: () => void;
+  onNavigateToChecklistMaster?: () => void;
+  onNavigateToRentalReady?: () => void;
+  onNavigateToEquipmentManagement?: () => void;
 }
 
-export default App;
+type AdminView = 'overview' | 'questions' | 'templates';
+
+const AdminDashboard: React.FC<AdminDashboardProps> = ({ 
+  onNavigateToCustomerAdmin, 
+  onNavigateToChecklistMaster, 
+  onNavigateToRentalReady,
+  onNavigateToEquipmentManagement 
+}) => {
+  const [currentView, setCurrentView] = useState<AdminView>('overview');
+
+  const renderContent = () => {
+    switch (currentView) {
+      case 'questions':
+        return <QuestionManager />;
+      case 'templates':
+        return <ChecklistTemplateManager />;
+      default:
+        return (
+          <>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Database className="w-8 h-8 text-blue-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Question & Categories Mgt</h3>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Create and manage inspection questions organized by categories. Define answer options with status mappings.
+              </p>
+              <button
+                onClick={() => setCurrentView('questions')}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                Manage Questions & Categories
+              </button>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <FileText className="w-8 h-8 text-green-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Checklist Templates</h3>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Build custom checklist templates by selecting and ordering questions for different equipment categories.
+              </p>
+              <button
+                onClick={() => setCurrentView('templates')}
+                className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                Manage Templates
+              </button>
+            </div>
+          </div>
+          </>
+        );
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-3">
+              <Settings className="w-8 h-8 text-blue-600" />
+              <div>
+                <h1 className="text-xl font-semibold text-gray-900">Rental Ready Admin</h1>
+                <p className="text-sm text-gray-600">Manage rental ready questions and templates</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={onNavigateToChecklistMaster}
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
+              >
+                <ClipboardList className="w-4 h-4" />
+                Checklist Master
+              </button>
+              <div className="w-px h-6 bg-gray-300 mx-1"></div>
+              <button
+                onClick={onNavigateToEquipmentManagement}
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
+              >
+                <FileText className="w-4 h-4" />
+                Equipment Mgt.
+              </button>
+              <button
+                className="flex items-center gap-2 px-3 py-2 bg-green-100 text-green-700 rounded-lg text-sm font-medium cursor-default"
+              >
+                <Settings className="w-4 h-4" />
+                Rental Ready Admin
+              </button>
+              <button
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Sub-navigation for this page */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <Settings className="w-6 h-6 text-green-600" />
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Rental Ready Admin</h3>
+              <p className="text-sm text-gray-600">Manage questions, categories, and templates</p>
+            </div>
+          </div>
+          
+          <div className="flex gap-2">
+            <button
+              onClick={() => setCurrentView('overview')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                currentView === 'overview'
+                  ? 'bg-green-100 text-green-700'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}
+            >
+              Overview
+            </button>
+            <button
+              onClick={() => setCurrentView('questions')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                currentView === 'questions'
+                  ? 'bg-green-100 text-green-700'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}
+            >
+              Questions & Categories
+            </button>
+            <button
+              onClick={() => setCurrentView('templates')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                currentView === 'templates'
+                  ? 'bg-green-100 text-green-700'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}
+            >
+              Templates
+            </button>
+          </div>
+        </div>
+
+        {renderContent()}
+      </div>
+    </div>
+  );
+};
+
+export default AdminDashboard;
