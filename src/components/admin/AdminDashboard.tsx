@@ -127,6 +127,15 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <button
                   onClick={onNavigateToRentalReady}
                   className="flex items-center gap-2 px-3 py-2 text-green-600 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors text-sm font-medium"
+                  title="Go to Rental Ready Management"
+                >
+                  <FileText className="w-4 h-4" />
+                  Rental Ready
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Main Content */}
