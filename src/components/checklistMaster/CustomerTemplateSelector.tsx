@@ -140,7 +140,7 @@ const CustomerTemplateSelector: React.FC<CustomerTemplateSelectorProps> = ({
           </button>
         )}
         <div className="flex-1"></div>
-      )}
+      </div>
     </div>
   );
 };
