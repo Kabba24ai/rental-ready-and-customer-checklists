@@ -127,23 +127,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <button
                   onClick={onNavigateToRentalReady}
                   className="flex items-center gap-2 px-3 py-2 text-green-600 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors text-sm font-medium"
-                  title="Go to Rental Ready Management"
-                >
-                  <ClipboardList className="w-4 h-4" />
-                  Rental Ready Mgt.
-                </button>
-                <button
-                  onClick={onNavigateToCustomerAdmin}
-                  className="flex items-center gap-2 px-3 py-2 text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-lg transition-colors text-sm font-medium"
-                  title="Go to Customer Admin Dashboard"
-                >
-                  <Users className="w-4 h-4" />
-                  Customer Admin
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Main Content */}

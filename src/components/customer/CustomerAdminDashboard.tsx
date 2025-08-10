@@ -122,15 +122,6 @@ const CustomerAdminDashboard: React.FC<CustomerAdminDashboardProps> = ({
                 <button
                   onClick={onNavigateToRentalReady}
                   className="flex items-center gap-2 px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors text-sm font-medium"
-                  title="Go to Rental Ready Admin Dashboard"
-                >
-                  <ClipboardList className="w-4 h-4" />
-                  Rental Ready Admin
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Main Content */}
