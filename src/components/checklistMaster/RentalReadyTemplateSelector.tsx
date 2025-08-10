@@ -17,6 +17,7 @@ const RentalReadyTemplateSelector: React.FC<RentalReadyTemplateSelectorProps> = 
   const [showCreateNew, setShowCreateNew] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
 
   // Get unique categories for filter dropdown
   const categories = Array.from(new Set(mockChecklistTemplates.map(template => template.equipmentCategory))).sort();
@@ -25,6 +26,7 @@ const RentalReadyTemplateSelector: React.FC<RentalReadyTemplateSelectorProps> = 
     const matchesSearch = template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          template.equipmentCategory.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = !categoryFilter || template.equipmentCategory === categoryFilter;
+    return matchesSearch && matchesCategory;
     return matchesSearch && matchesCategory;
   }).sort((a, b) => a.name.localeCompare(b.name)); // Alphabetical sort by name
 
@@ -61,6 +63,24 @@ const RentalReadyTemplateSelector: React.FC<RentalReadyTemplateSelectorProps> = 
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search rental ready templates..."
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Equipment Category</label>
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+          >
+            <option value="">All Categories</option>
+            {categories.map(category => (
+              <option key={category} value={category}>{category}</option>
+            ))}
+          </select>
+        </div>
               placeholder="Search rental ready templates..."
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
