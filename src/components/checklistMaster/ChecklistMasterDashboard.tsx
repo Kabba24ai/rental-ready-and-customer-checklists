@@ -65,27 +65,34 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                 <p className="text-sm text-gray-600">Manage complete checklist systems for equipment</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
+              <button
+                className="flex items-center gap-2 px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium cursor-default"
+              >
+                <ClipboardList className="w-4 h-4" />
+                Checklist Master
+              </button>
+              <div className="w-px h-6 bg-gray-300 mx-1"></div>
+              <button
+                onClick={onNavigateToEquipmentManagement}
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
+              >
+                <FileText className="w-4 h-4" />
+                Equipment Mgt.
+              </button>
               <button
                 onClick={onNavigateToRentalReady}
-                className="flex items-center gap-2 px-3 py-2 text-green-600 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors text-sm font-medium"
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
               >
                 <Settings className="w-4 h-4" />
                 Rental Ready Admin
               </button>
               <button
                 onClick={onNavigateToCustomerAdmin}
-                className="flex items-center gap-2 px-3 py-2 text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-lg transition-colors text-sm font-medium"
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
               >
                 <Users className="w-4 h-4" />
-                Customer Admin
-              </button>
-              <button
-                onClick={onNavigateToEquipmentManagement}
-                className="flex items-center gap-2 px-3 py-2 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 rounded-lg transition-colors text-sm font-medium"
-              >
-                <FileText className="w-4 h-4" />
-                Equipment Mgt.
+                Customer Checklist Admin
               </button>
             </div>
           </div>
