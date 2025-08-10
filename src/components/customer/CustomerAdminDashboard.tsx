@@ -104,17 +104,6 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 Rental Ready Admin
               </button>
               <button
-                onClick={onNavigateToCustomerAdmin}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
-              >
-                <Users className="w-4 h-4" />
-                Customer Checklist Admin
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Sub-navigation for this page */}
