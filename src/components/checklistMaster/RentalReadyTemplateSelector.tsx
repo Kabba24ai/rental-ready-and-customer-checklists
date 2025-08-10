@@ -17,7 +17,6 @@ const RentalReadyTemplateSelector: React.FC<RentalReadyTemplateSelectorProps> = 
   const [showCreateNew, setShowCreateNew] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
 
   // Get unique categories for filter dropdown
   const categories = Array.from(new Set(mockChecklistTemplates.map(template => template.equipmentCategory))).sort();
