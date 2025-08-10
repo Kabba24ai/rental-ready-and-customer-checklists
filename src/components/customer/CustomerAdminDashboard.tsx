@@ -3,6 +3,7 @@ import { Settings, Database, FileText, Users, ArrowRight, ClipboardList } from '
 import CustomerQuestionManager from './CustomerQuestionManager';
 import CustomerChecklistTemplateManager from './CustomerChecklistTemplateManager';
 import AdminNavigation from '../admin/AdminNavigation';
+import AdminDashboard from '../admin/AdminDashboard';
 
 interface CustomerAdminDashboardProps {
   onNavigateToRentalReady?: () => void;
