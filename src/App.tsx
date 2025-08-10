@@ -36,13 +36,13 @@ import ChecklistMasterDashboard from './components/checklistMaster/ChecklistMast
 import CreateChecklistMasterForm from './components/checklistMaster/CreateChecklistMasterForm';
 import EditChecklistMasterForm from './components/checklistMaster/EditChecklistMasterForm';
 import GuidedChecklistWorkflow from './components/checklistMaster/GuidedChecklistWorkflow';
-import AdminNavigation from './components/admin/AdminNavigation';
+import Navigation from './components/Navigation';
 import { ClipboardList, Settings, Users, Truck, Package } from 'lucide-react';
 
-type AppView = 'checklist' | 'admin' | 'customer-admin' | 'customer-delivery' | 'customer-return' | 'checklist-master' | 'create-checklist-master' | 'edit-checklist-master' | 'rental-ready' | 'guided-workflow';
+type AppView = 'navigation' | 'checklist' | 'admin' | 'customer-admin' | 'customer-delivery' | 'customer-return' | 'checklist-master' | 'create-checklist-master' | 'edit-checklist-master' | 'rental-ready' | 'guided-workflow';
 
 function App() {
-  const [currentView, setCurrentView] = useState<AppView>('rental-ready');
+  const [currentView, setCurrentView] = useState<AppView>('navigation');
   const [equipment, setEquipment] = useState<Equipment[]>(mockEquipment);
   const [selectedEquipment, setSelectedEquipment] = useState<Equipment | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -179,6 +179,17 @@ function App() {
     setShowSuccess(true);
     setTimeout(() => setShowSuccess(false), 3000);
   };
+
+  if (currentView === 'navigation') {
+    return (
+      <Navigation
+        onNavigateToChecklistMaster={() => setCurrentView('checklist-master')}
+        onNavigateToRentalReadyAdmin={() => setCurrentView('admin')}
+        onNavigateToCustomerAdmin={() => setCurrentView('customer-admin')}
+        onNavigateToEquipmentManagement={() => setCurrentView('rental-ready')}
+      />
+    );
+  }
 
   if (currentView === 'checklist-master') {
     return (
