@@ -6,11 +6,13 @@ import ChecklistTemplateManager from '../admin/ChecklistTemplateManager';
 interface RentalReadyTemplateSelectorProps {
   selectedTemplate: string;
   onTemplateSelect: (templateId: string) => void;
+  onCancelToCreateTemplate?: () => void;
 }
 
 const RentalReadyTemplateSelector: React.FC<RentalReadyTemplateSelectorProps> = ({
   selectedTemplate,
-  onTemplateSelect
+  onTemplateSelect,
+  onCancelToCreateTemplate
 }) => {
   const [showCreateNew, setShowCreateNew] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -41,13 +43,23 @@ const RentalReadyTemplateSelector: React.FC<RentalReadyTemplateSelectorProps> = 
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-gray-900">Select Rental Ready Template</h3>
-        <button
-          onClick={() => setShowCreateNew(true)}
-          className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-        >
-          <Plus className="w-4 h-4" />
-          Create New Template
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowCreateNew(true)}
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Create New Template
+          </button>
+          {onCancelToCreateTemplate && (
+            <button
+              onClick={onCancelToCreateTemplate}
+              className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+            >
+              Cancel New Checklist and Create Rental Ready Template
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Search */}

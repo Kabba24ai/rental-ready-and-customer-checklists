@@ -25,11 +25,9 @@ const GuidedChecklistWorkflow: React.FC<GuidedChecklistWorkflowProps> = ({
 
   const steps = [
     { id: 1, title: 'Name Your Checklist', description: 'Create and name your checklist system' },
-    { id: 2, title: 'Rental Ready Questions', description: 'View/Add rental ready questions & categories' },
-    { id: 3, title: 'Assign Rental Ready Template', description: 'Select or create rental ready checklist template' },
-    { id: 4, title: 'Customer Questions', description: 'View/Add customer checklist questions & categories' },
-    { id: 5, title: 'Assign Customer Template', description: 'Select or create customer checklist template' },
-    { id: 6, title: 'Complete & Save', description: 'Save and return to Equipment Mgt.' }
+    { id: 2, title: 'Assign Rental Ready Template', description: 'Select rental ready checklist template' },
+    { id: 3, title: 'Assign Customer Template', description: 'Select customer checklist template' },
+    { id: 4, title: 'Complete & Save', description: 'Save and return to Equipment Mgt.' }
   ];
 
   const handleStepComplete = (stepId: number) => {
@@ -66,20 +64,28 @@ const GuidedChecklistWorkflow: React.FC<GuidedChecklistWorkflowProps> = ({
       case 2:
         return (
           <div className="space-y-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h3 className="font-medium text-blue-900 mb-2">Step 2: Rental Ready Questions & Categories</h3>
-              <p className="text-sm text-blue-800">
-                Review existing questions or add new ones for your rental ready checklist. 
-                These questions will be used to inspect equipment before it's marked as rental ready.
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <h3 className="font-medium text-green-900 mb-2">Step 2: Assign Rental Ready Template</h3>
+              <p className="text-sm text-green-800">
+                Select an existing rental ready template or create a new one. This template will be assigned to your checklist system for equipment inspections.
               </p>
             </div>
-            <QuestionManager />
+            <RentalReadyTemplateSelector 
+              selectedTemplate={selectedRentalReadyTemplate}
+              onTemplateSelect={setSelectedRentalReadyTemplate}
+              onCancelToCreateTemplate={onCancel}
+            />
             <div className="flex justify-end">
               <button
-                onClick={() => handleStepComplete(2)}
-                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                onClick={() => selectedRentalReadyTemplate && handleStepComplete(2)}
+                disabled={!selectedRentalReadyTemplate}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
+                  selectedRentalReadyTemplate
+                    ? 'bg-green-600 hover:bg-green-700 text-white'
+                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                }`}
               >
-                Continue to Template Creation
+                Continue to Customer Template
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -88,59 +94,8 @@ const GuidedChecklistWorkflow: React.FC<GuidedChecklistWorkflowProps> = ({
       case 3:
         return (
           <div className="space-y-6">
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h3 className="font-medium text-green-900 mb-2">Step 3: Assign Rental Ready Template</h3>
-              <p className="text-sm text-green-800">
-                Select an existing rental ready template or create a new one. This template will be assigned to your checklist system for equipment inspections.
-              </p>
-            </div>
-            <RentalReadyTemplateSelector 
-              selectedTemplate={selectedRentalReadyTemplate}
-              onTemplateSelect={setSelectedRentalReadyTemplate}
-            />
-            <div className="flex justify-end">
-              <button
-                onClick={() => selectedRentalReadyTemplate && handleStepComplete(3)}
-                disabled={!selectedRentalReadyTemplate}
-                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
-                  selectedRentalReadyTemplate
-                    ? 'bg-green-600 hover:bg-green-700 text-white'
-                    : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                }`}
-              >
-                Continue to Customer Questions
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        );
-      case 4:
-        return (
-          <div className="space-y-6">
-            <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
-              <h3 className="font-medium text-purple-900 mb-2">Step 4: Customer Questions & Categories</h3>
-              <p className="text-sm text-purple-800">
-                Review existing customer questions or add new ones for delivery/return checklists. 
-                These questions include pricing for damaged or missing items.
-              </p>
-            </div>
-            <CustomerQuestionManager />
-            <div className="flex justify-end">
-              <button
-                onClick={() => handleStepComplete(4)}
-                className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-              >
-                Continue to Customer Template
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        );
-      case 5:
-        return (
-          <div className="space-y-6">
             <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
-              <h3 className="font-medium text-indigo-900 mb-2">Step 5: Assign Customer Template</h3>
+              <h3 className="font-medium text-indigo-900 mb-2">Step 3: Assign Customer Template</h3>
               <p className="text-sm text-indigo-800">
                 Select an existing customer template or create a new one. This template will be assigned to your checklist system for delivery and return processes.
               </p>
@@ -148,10 +103,11 @@ const GuidedChecklistWorkflow: React.FC<GuidedChecklistWorkflowProps> = ({
             <CustomerTemplateSelector 
               selectedTemplate={selectedCustomerTemplate}
               onTemplateSelect={setSelectedCustomerTemplate}
+              onCancelToCreateTemplate={onCancel}
             />
             <div className="flex justify-end">
               <button
-                onClick={() => selectedCustomerTemplate && handleStepComplete(5)}
+                onClick={() => selectedCustomerTemplate && handleStepComplete(3)}
                 disabled={!selectedCustomerTemplate}
                 className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors ${
                   selectedCustomerTemplate
@@ -165,7 +121,7 @@ const GuidedChecklistWorkflow: React.FC<GuidedChecklistWorkflowProps> = ({
             </div>
           </div>
         );
-      case 6:
+      case 4:
         return (
           <div className="max-w-2xl mx-auto text-center py-12">
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-6" />
@@ -305,7 +261,7 @@ const GuidedChecklistWorkflow: React.FC<GuidedChecklistWorkflowProps> = ({
       </div>
 
       {/* Navigation Footer */}
-      {currentStep > 1 && currentStep < 6 && (
+      {currentStep > 1 && currentStep < 4 && (
         <div className="bg-white border-t border-gray-200 px-4 py-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <button
@@ -316,7 +272,7 @@ const GuidedChecklistWorkflow: React.FC<GuidedChecklistWorkflowProps> = ({
               Previous Step
             </button>
             <div className="text-sm text-gray-500">
-              Step {currentStep} of {steps.length}
+              Step {currentStep} of 4
             </div>
           </div>
         </div>
