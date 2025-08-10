@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Plus, Edit, Trash2, CheckCircle, Settings, ClipboardList } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, CheckCircle, Settings, ClipboardList, Users } from 'lucide-react';
 import { ChecklistMasterSystemWithCounts } from '../../types/checklistMaster';
 import { mockChecklistMasterSystems } from '../../data/checklistMasterMockData';
 import { mockChecklistTemplates } from '../../data/adminMockData';
@@ -64,6 +64,35 @@ const ChecklistMasterDashboard: React.FC<ChecklistMasterDashboardProps> = ({
                 <h1 className="text-xl font-semibold text-gray-900">Checklist Management</h1>
                 <p className="text-sm text-gray-600">Manage complete checklist systems for equipment</p>
               </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <button
+                className="flex items-center gap-2 px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium"
+              >
+                <ClipboardList className="w-4 h-4" />
+                Checklist Master
+              </button>
+              <button
+                onClick={onNavigateToEquipmentManagement}
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
+              >
+                <ClipboardList className="w-4 h-4" />
+                Equipment Mgt.
+              </button>
+              <button
+                onClick={onNavigateToRentalReady}
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
+              >
+                <Settings className="w-4 h-4" />
+                Rental Ready Admin
+              </button>
+              <button
+                onClick={onNavigateToCustomerAdmin}
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium"
+              >
+                <Users className="w-4 h-4" />
+                Customer Checklist Admin
+              </button>
             </div>
           </div>
         </div>
