@@ -154,7 +154,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
           onNavigateToChecklistMaster={onNavigateToChecklistMaster || (() => {})}
           onNavigateToRentalReadyAdmin={() => {}} // Already on this screen
           onNavigateToCustomerAdmin={onNavigateToCustomerAdmin || (() => {})}
-          onNavigateToRentalReadyManagement={onNavigateToEquipmentManagement || (() => {})}
+          onNavigateToEquipmentManagement={onNavigateToEquipmentManagement || (() => {})}
         />
 
         {renderContent()}
