@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Checklist Templates</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .transition-colors {
+            transition-property: color, background-color, border-color;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+        
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+        
+        .hover\:shadow-sm:hover {
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        
+        .focus\:ring-2:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5);
+        }
+        
+        .focus\:border-transparent:focus {
+            border-color: transparent;
+        }
+
+        .drag-over {
+            background-color: #f3f4f6;
+            border-color: #6366f1;
+        }
+
+        .dragging {
+            opacity: 0.5;
+        }
+
+        .modal-backdrop {
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Success Message -->
+    <div id="successMessage" class="hidden bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+        <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span id="successText" class="text-green-800 font-medium"></span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900">Customer Checklist Templates</h2>
+            <p class="text-gray-600">Create delivery/return checklist templates for different equipment categories</p>
+        </div>
+        <button
+            onclick="openNewTemplateModal()"
+            class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+        >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            New Customer Template
+        </button>
+    </div>
+
+    <!-- Search -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
+        <div class="relative">
+            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search customer templates..."
+                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                oninput="filterTemplates()"
+            />
+        </div>
+    </div>
+
+    <!-- Templates List -->
+    <div id="templatesList" class="space-y-4">
+        <!-- Templates will be rendered here by JavaScript -->
+    </div>
+
+    <!-- New Template Modal -->
+    <div id="newTemplateModal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-backdrop flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl shadow-xl max-w-6xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xl font-semibold text-gray-900">New Customer Template</h3>
+                    <button
+                        onclick="closeTemplateModal()"
+                        class="p-2 text-gray-400 hover:text-gray-600 rounded-lg"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="flex-1 overflow-hidden">
+                <form id="templateForm" class="h-full flex">
+                    <!-- Left Panel - Template Details -->
+                    <div class="w-1/3 p-6 border-r border-gray-200 overflow-y-auto">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Template Name *
+                                </label>
+                                <input
+                                    type="text"
+                                    id="templateName"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Description
+                                </label>
+                                <textarea
+                                    id="templateDescription"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                    rows="3"
+                                ></textarea>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Equipment Category *
+                                </label>
+                                <select
+                                    id="templateCategory"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                    required
+                                >
+                                    <option value="">Select Category</option>
+                                    <option value="Heavy Equipment">Heavy Equipment</option>
+                                    <option value="Compact Equipment">Compact Equipment</option>
+                                    <option value="Power Equipment">Power Equipment</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    id="templateActive"
+                                    checked
+                                    class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                />
+                                <label for="templateActive" class="text-sm font-medium text-gray-700">
+                                    Active Template
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Middle Panel - Available Questions -->
+                    <div class="w-1/3 p-6 border-r border-gray-200 overflow-y-auto">
+                        <h4 class="font-medium text-gray-900 mb-4">Available Customer Questions</h4>
+                        
+                        <div class="space-y-3 mb-4">
+                            <input
+                                type="text"
+                                id="questionSearch"
+                                placeholder="Search questions..."
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                oninput="filterAvailableQuestions()"
+                            />
+                            
+                            <select
+                                id="questionCategoryFilter"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                                onchange="filterAvailableQuestions()"
+                            >
+                                <option value="">All Categories</option>
+                                <option value="ccat-keys">Keys & Access</option>
+                                <option value="ccat-manuals">Manuals & Documentation</option>
+                                <option value="ccat-attachments">Attachments & Accessories</option>
+                                <option value="ccat-condition">Physical Condition</option>
+                                <option value="ccat-fluids">Fluids & Fuel</option>
+                            </select>
+                        </div>
+
+                        <div id="availableQuestions" class="space-y-2">
+                            <!-- Available questions will be rendered here -->
+                        </div>
+                    </div>
+
+                    <!-- Right Panel - Template Questions -->
+                    <div class="w-1/3 p-6 overflow-y-auto">
+                        <h4 class="font-medium text-gray-900 mb-4">
+                            Template Questions (<span id="templateQuestionCount">0</span>)
+                        </h4>
+                        
+                        <div
+                            id="templateQuestions"
+                            ondragover="handleDragOver(event)"
+                            ondrop="handleDrop(event)"
+                            class="min-h-[200px] border-2 border-dashed border-gray-300 bg-gray-50 rounded-lg p-4"
+                        >
+                            <div id="emptyState" class="text-center text-gray-500 py-8">
+                                <p class="text-sm">Drag customer questions here to build your template</p>
+                            </div>
+                            <div id="templateQuestionsList" class="space-y-2 hidden">
+                                <!-- Template questions will be rendered here -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-6 border-t border-gray-200">
+                <div class="flex items-center gap-3">
+                    <button
+                        onclick="saveTemplate()"
+                        class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                        Save Customer Template
+                    </button>
+                    <button
+                        onclick="closeTemplateModal()"
+                        class="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock data for available customer questions
+        const mockCustomerQuestions = [
+            {
+                id: 'cq-keys',
+                name: 'Equipment Keys',
+                categoryId: 'ccat-keys',
+                categoryName: 'Keys & Access',
+                required: true,
+                deliveryText: 'Keys Delivered',
+                returnText: 'Keys Returned'
+            },
+            {
+                id: 'cq-remote',
+                name: 'Remote Control',
+                categoryId: 'ccat-keys',
+                categoryName: 'Keys & Access',
+                required: false,
+                deliveryText: 'Remote Control Delivered',
+                returnText: 'Remote Control Returned'
+            },
+            {
+                id: 'cq-bucket',
+                name: 'Standard Bucket',
+                categoryId: 'ccat-attachments',
+                categoryName: 'Attachments & Accessories',
+                required: true,
+                deliveryText: 'Standard Bucket Delivered',
+                returnText: 'Standard Bucket Returned'
+            },
+            {
+                id: 'cq-manual',
+                name: 'Operating Manual',
+                categoryId: 'ccat-manuals',
+                categoryName: 'Manuals & Documentation',
+                required: false,
+                deliveryText: 'Operating Manual Delivered',
+                returnText: 'Operating Manual Returned'
+            },
+            {
+                id: 'cq-safety-manual',
+                name: 'Safety Manual',
+                categoryId: 'ccat-manuals',
+                categoryName: 'Manuals & Documentation',
+                required: true,
+                deliveryText: 'Safety Manual Delivered',
+                returnText: 'Safety Manual Returned'
+            },
+            {
+                id: 'cq-fuel-level',
+                name: 'Fuel Level',
+                categoryId: 'ccat-fluids',
+                categoryName: 'Fluids & Fuel',
+                required: true,
+                deliveryText: 'Fuel Level at Delivery',
+                returnText: 'Fuel Level at Return'
+            }
+        ];
+
+        // Template questions array
+        let templateQuestions = [];
+        let draggedQuestion = null;
+
+        // Modal functions
+        function openNewTemplateModal() {
+            document.getElementById('newTemplateModal').classList.remove('hidden');
+            renderAvailableQuestions();
+            renderTemplateQuestions();
+        }
+
+        function closeTemplateModal() {
+            document.getElementById('newTemplateModal').classList.add('hidden');
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById('templateForm').reset();
+            document.getElementById('templateActive').checked = true;
+            templateQuestions = [];
+            renderTemplateQuestions();
+            renderAvailableQuestions();
+        }
+
+        // Render available questions
+        function renderAvailableQuestions() {
+            const container = document.getElementById('availableQuestions');
+            const searchTerm = document.getElementById('questionSearch').value.toLowerCase();
+            const categoryFilter = document.getElementById('questionCategoryFilter').value;
+            
+            const filteredQuestions = mockCustomerQuestions.filter(question => {
+                const matchesSearch = question.name.toLowerCase().includes(searchTerm) ||
+                                   question.deliveryText.toLowerCase().includes(searchTerm) ||
+                                   question.returnText.toLowerCase().includes(searchTerm);
+                const matchesCategory = !categoryFilter || question.categoryId === categoryFilter;
+                const notInTemplate = !templateQuestions.some(tq => tq.questionId === question.id);
+                return matchesSearch && matchesCategory && notInTemplate;
+            });
+
+            container.innerHTML = filteredQuestions.map(question => `
+                <div
+                    draggable="true"
+                    ondragstart="handleDragStart(event, '${question.id}')"
+                    class="p-3 border border-gray-200 rounded-lg cursor-move hover:bg-gray-50 transition-colors"
+                >
+                    <div class="flex items-center gap-2 mb-2">
+                        <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5"></path>
+                        </svg>
+                        <span class="font-medium text-sm">${question.name}</span>
+                        ${question.required ? `
+                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-medium">
+                                Required
+                            </span>
+                        ` : ''}
+                    </div>
+                    <div class="ml-6 space-y-1 text-xs">
+                        <div class="text-blue-600">📤 ${question.deliveryText}</div>
+                        <div class="text-green-600">📥 ${question.returnText}</div>
+                        <div class="text-gray-500">${question.categoryName}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render template questions
+        function renderTemplateQuestions() {
+            const container = document.getElementById('templateQuestions');
+            const emptyState = document.getElementById('emptyState');
+            const questionsList = document.getElementById('templateQuestionsList');
+            const countElement = document.getElementById('templateQuestionCount');
+            
+            countElement.textContent = templateQuestions.length;
+
+            if (templateQuestions.length === 0) {
+                emptyState.classList.remove('hidden');
+                questionsList.classList.add('hidden');
+                container.classList.add('border-gray-300', 'bg-gray-50');
+                container.classList.remove('border-transparent', 'bg-transparent');
+            } else {
+                emptyState.classList.add('hidden');
+                questionsList.classList.remove('hidden');
+                container.classList.remove('border-gray-300', 'bg-gray-50');
+                container.classList.add('border-transparent', 'bg-transparent');
+
+                questionsList.innerHTML = templateQuestions.map((tq, index) => {
+                    const question = mockCustomerQuestions.find(q => q.id === tq.questionId);
+                    return `
+                        <div class="p-3 border border-gray-200 rounded-lg bg-white">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-6 h-6 bg-indigo-100 text-indigo-800 rounded-full flex items-center justify-center text-xs font-medium">
+                                    ${index + 1}
+                                </span>
+                                <span class="flex-1 font-medium text-sm">${question ? question.name : 'Unknown Question'}</span>
+                                <button
+                                    type="button"
+                                    onclick="removeTemplateQuestion('${tq.questionId}')"
+                                    class="p-1 text-red-600 hover:bg-red-50 rounded"
+                                >
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            ${question ? `
+                                <div class="ml-8 space-y-1 text-xs mb-2">
+                                    <div class="text-blue-600">📤 ${question.deliveryText}</div>
+                                    <div class="text-green-600">📥 ${question.returnText}</div>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="flex items-center gap-2 ml-8">
+                                <input
+                                    type="checkbox"
+                                    ${tq.required ? 'checked' : ''}
+                                    onchange="toggleTemplateQuestionRequired('${tq.questionId}')"
+                                    class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                />
+                                <label class="text-xs text-gray-600">Required</label>
+                            </div>
+                            
+                            <div class="flex items-center gap-2 ml-8 mt-1">
+                                <button
+                                    type="button"
+                                    onclick="moveTemplateQuestion(${index}, ${Math.max(0, index - 1)})"
+                                    ${index === 0 ? 'disabled' : ''}
+                                    class="text-xs text-indigo-600 hover:text-indigo-800 disabled:text-gray-400"
+                                >
+                                    ↑ Up
+                                </button>
+                                <button
+                                    type="button"
+                                    onclick="moveTemplateQuestion(${index}, ${Math.min(templateQuestions.length - 1, index + 1)})"
+                                    ${index === templateQuestions.length - 1 ? 'disabled' : ''}
+                                    class="text-xs text-indigo-600 hover:text-indigo-800 disabled:text-gray-400"
+                                >
+                                    ↓ Down
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // Drag and drop functions
+        function handleDragStart(event, questionId) {
+            draggedQuestion = questionId;
+            event.dataTransfer.effectAllowed = 'copy';
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'copy';
+            document.getElementById('templateQuestions').classList.add('drag-over');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            document.getElementById('templateQuestions').classList.remove('drag-over');
+            
+            if (draggedQuestion) {
+                const question = mockCustomerQuestions.find(q => q.id === draggedQuestion);
+                if (question && !templateQuestions.some(tq => tq.questionId === draggedQuestion)) {
+                    const newTemplateQuestion = {
+                        id: `tq-${Date.now()}`,
+                        questionId: draggedQuestion,
+                        sortOrder: templateQuestions.length + 1,
+                        required: question.required
+                    };
+                    
+                    templateQuestions.push(newTemplateQuestion);
+                    renderTemplateQuestions();
+                    renderAvailableQuestions();
+                }
+            }
+            draggedQuestion = null;
+        }
+
+        // Template question management
+        function removeTemplateQuestion(questionId) {
+            templateQuestions = templateQuestions.filter(tq => tq.questionId !== questionId);
+            // Update sort orders
+            templateQuestions.forEach((tq, index) => {
+                tq.sortOrder = index + 1;
+            });
+            renderTemplateQuestions();
+            renderAvailableQuestions();
+        }
+
+        function toggleTemplateQuestionRequired(questionId) {
+            const question = templateQuestions.find(tq => tq.questionId === questionId);
+            if (question) {
+                question.required = !question.required;
+                renderTemplateQuestions();
+            }
+        }
+
+        function moveTemplateQuestion(fromIndex, toIndex) {
+            if (fromIndex === toIndex) return;
+            
+            const [movedQuestion] = templateQuestions.splice(fromIndex, 1);
+            templateQuestions.splice(toIndex, 0, movedQuestion);
+            
+            // Update sort orders
+            templateQuestions.forEach((tq, index) => {
+                tq.sortOrder = index + 1;
+            });
+            
+            renderTemplateQuestions();
+        }
+
+        // Filter functions
+        function filterAvailableQuestions() {
+            renderAvailableQuestions();
+        }
+
+        // Save template
+        function saveTemplate() {
+            const name = document.getElementById('templateName').value.trim();
+            const description = document.getElementById('templateDescription').value.trim();
+            const category = document.getElementById('templateCategory').value;
+            const isActive = document.getElementById('templateActive').checked;
+
+            if (!name || !category) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const templateData = {
+                id: `ctemplate-${Date.now()}`,
+                name: name,
+                description: description,
+                equipmentCategory: category,
+                questions: templateQuestions,
+                isActive: isActive,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+
+            // Add to templates array
+            mockCustomerTemplates.push(templateData);
+            
+            // Show success message
+            showSuccessMessage('Customer template created successfully!');
+            
+            // Close modal and refresh list
+            closeTemplateModal();
+            renderTemplates();
+        }
+
+        // Close modal on escape key or outside click
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeTemplateModal();
+            }
+        });
+
+        document.getElementById('newTemplateModal').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeTemplateModal();
+            }
+        });
+
+        // Initialize available questions when modal opens
+        function initializeModal() {
+            renderAvailableQuestions();
+            renderTemplateQuestions();
+        }
+
+        // Add event listener to modal open
+        const originalOpenModal = openNewTemplateModal;
+        openNewTemplateModal = function() {
+            originalOpenModal();
+            initializeModal();
+        };
+    </script>
+</body>
+</html>
