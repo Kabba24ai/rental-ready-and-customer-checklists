@@ -419,48 +419,639 @@
             'ccat-condition': 'Physical Condition',
             'ccat-fluids': 'Fluids & Fuel'
         };
-
-        // Mock customer questions data
+// Customer Questions Module - Namespaced to avoid conflicts
+window.CustomerQuestions = (function() {
+    // Private variables
+    let expandedQuestions = new Set();
+    let editingQuestion = null;
+    let formAnswerPairs = [];
+    
+    // Mock data for customer questions (same as before)
+    const mockCustomerQuestions = [
+        {
+            id: 'cq-keys',
+            name: 'Equipment Keys',
+            categoryId: 'ccat-keys',
+            categoryName: 'Keys & Access',
+            required: true,
+            deliveryText: 'Keys Delivered',
+            returnText: 'Keys Returned',
+            syncTexts: true,
+            deliveryAnswers: [
+                { id: 'cans-1', description: 'Yes', dollarValue: 0, sortOrder: 1 },
+                { id: 'cans-2', description: 'No', dollarValue: 0, sortOrder: 2 }
+            ],
+            returnAnswers: [
+                { id: 'cans-3', description: 'Yes', dollarValue: 0, sortOrder: 1 },
+                { id: 'cans-4', description: 'No', dollarValue: 150, sortOrder: 2 }
+            ],
+            answerSyncMap: { 0: true, 1: true }
+        },
+        {
+            id: 'cq-remote',
+            name: 'Remote Control',
+            categoryId: 'ccat-keys',
+            categoryName: 'Keys & Access',
+            required: false,
+            deliveryText: 'Remote Control Delivered',
+            returnText: 'Remote Control Returned',
+            syncTexts: true,
+            deliveryAnswers: [
+                { id: 'cans-5', description: 'Yes', dollarValue: 0, sortOrder: 1 },
+                { id: 'cans-6', description: 'No', dollarValue: 0, sortOrder: 2 },
+                { id: 'cans-7', description: 'N/A - Not Applicable', dollarValue: 0, sortOrder: 3 }
+            ],
+            returnAnswers: [
+                { id: 'cans-8', description: 'Yes', dollarValue: 0, sortOrder: 1 },
+                { id: 'cans-9', description: 'No', dollarValue: 300, sortOrder: 2 },
+                { id: 'cans-10', description: 'N/A - Not Applicable', dollarValue: 0, sortOrder: 3 }
+            ],
+            answerSyncMap: { 0: true, 1: true, 2: true }
+        },
+        {
+            id: 'cq-bucket',
+            name: 'Standard Bucket',
+            categoryId: 'ccat-attachments',
+            categoryName: 'Attachments & Accessories',
+            required: true,
+            deliveryText: 'Standard Bucket Delivered',
+            returnText: 'Standard Bucket Returned',
+            syncTexts: true,
+            deliveryAnswers: [
+                { id: 'cans-11', description: 'Good Condition', dollarValue: 0, sortOrder: 1 },
+                { id: 'cans-12', description: 'Minor Wear', dollarValue: 0, sortOrder: 2 },
+                { id: 'cans-13', description: 'Not Delivered', dollarValue: 0, sortOrder: 3 }
+            ],
+            returnAnswers: [
+                { id: 'cans-14', description: 'Good Condition', dollarValue: 0, sortOrder: 1 },
+                { id: 'cans-15', description: 'Minor Damage', dollarValue: 200, sortOrder: 2 },
+                { id: 'cans-16', description: 'Major Damage', dollarValue: 800, sortOrder: 3 },
+                { id: 'cans-17', description: 'Missing', dollarValue: 1500, sortOrder: 4 }
+            ],
+            answerSyncMap: { 0: true, 1: false, 2: false }
+        }
+    ];
         const mockCustomerQuestions = [
-            {
-                id: 'cq-keys',
-                name: 'Equipment Keys',
-                categoryId: 'ccat-keys',
-                required: true,
-                deliveryText: 'Keys Delivered',
-                returnText: 'Keys Returned',
-                syncTexts: true,
-                deliveryAnswers: [
-                    { id: 'cans-d-1', description: 'Yes', dollarValue: 0, sortOrder: 1 },
-                    { id: 'cans-d-2', description: 'No', dollarValue: 0, sortOrder: 2 }
-                ],
-                returnAnswers: [
-                    { id: 'cans-r-1', description: 'Yes', dollarValue: 0, sortOrder: 1 },
-                    { id: 'cans-r-2', description: 'No', dollarValue: 150, sortOrder: 2 }
-                ],
-                answerSyncMap: { 0: true, 1: true },
-                createdAt: '2024-01-01T00:00:00Z',
-                updatedAt: '2024-01-01T00:00:00Z'
-            }
-        ];
-
-        // Add answer pair management
-        let answerPairs = [
-            {
-                delivery: { id: `temp-d-${Date.now()}`, description: '', dollarValue: 0, sortOrder: 1 },
-                return: { id: `temp-r-${Date.now()}`, description: '', dollarValue: 0, sortOrder: 1 },
-                sync: true
-            }
-        ];
-        let editingQuestion = null;
-
+    // Public methods
+    return {
         // Toggle individual question expansion
-        function toggleQuestionExpansion(questionId) {
+        toggleQuestionExpansion: function(questionId) {
             const answersDiv = document.getElementById(`answers-${questionId}`);
             const chevronIcon = document.getElementById(`chevron-${questionId}`);
             const toggleText = document.getElementById(`toggleText-${questionId}`);
             
             if (expandedQuestions.has(questionId)) {
+                // Hide answers
+                answersDiv.classList.add('hidden');
+                chevronIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
+                toggleText.textContent = 'Show Answers';
+                expandedQuestions.delete(questionId);
+            } else {
+                // Show answers
+                answersDiv.classList.remove('hidden');
+                chevronIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>';
+                toggleText.textContent = 'Hide Answers';
+                expandedQuestions.add(questionId);
+            }
+            
+            this.updateToggleAllButton();
+        },
+
+        // Toggle all questions
+        toggleAllAnswers: function() {
+            const allQuestions = document.querySelectorAll('[data-question-id]');
+            const allExpanded = allQuestions.length > 0 && Array.from(allQuestions).every(q => {
+                const questionId = q.getAttribute('data-question-id');
+                return expandedQuestions.has(questionId);
+            });
+            
+            const self = this;
+            allQuestions.forEach(questionDiv => {
+                const questionId = questionDiv.getAttribute('data-question-id');
+                if (allExpanded) {
+                    // Hide all
+                    if (expandedQuestions.has(questionId)) {
+                        self.toggleQuestionExpansion(questionId);
+                    }
+                } else {
+                    // Show all
+                    if (!expandedQuestions.has(questionId)) {
+                        self.toggleQuestionExpansion(questionId);
+                    }
+                }
+            });
+        },
+
+        // Update toggle all button text
+        updateToggleAllButton: function() {
+            const allQuestions = document.querySelectorAll('[data-question-id]');
+            const allExpanded = allQuestions.length > 0 && Array.from(allQuestions).every(q => {
+                const questionId = q.getAttribute('data-question-id');
+                return expandedQuestions.has(questionId);
+            });
+            
+            const toggleBtn = document.getElementById('toggleAllBtn');
+            const eyeIcon = document.getElementById('eyeIcon');
+            const toggleText = document.getElementById('toggleAllText');
+            
+            if (toggleBtn && eyeIcon && toggleText) {
+                if (allExpanded) {
+                    eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"></path>';
+                    toggleText.textContent = 'Hide All Answers';
+                    toggleBtn.className = toggleBtn.className.replace('text-purple-600 hover:text-purple-700 hover:bg-purple-50 border-purple-200', 'text-gray-600 hover:text-gray-700 hover:bg-gray-50 border-gray-200');
+                } else {
+                    eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>';
+                    toggleText.textContent = 'Show All Answers';
+                    toggleBtn.className = toggleBtn.className.replace('text-gray-600 hover:text-gray-700 hover:bg-gray-50 border-gray-200', 'text-purple-600 hover:text-purple-700 hover:bg-purple-50 border-purple-200');
+                }
+            }
+        },
+
+        // Modal functions
+        openNewQuestionModal: function() {
+            editingQuestion = null;
+            formAnswerPairs = [{ delivery: { description: '', dollarValue: 0 }, return: { description: '', dollarValue: 0 }, isSync: true }];
+            
+            document.getElementById('customerQuestionModal').classList.remove('hidden');
+            document.getElementById('modalTitle').textContent = 'New Customer Question';
+            this.resetQuestionForm();
+            this.renderAnswerPairs();
+        },
+
+        editQuestion: function(questionId) {
+            const question = mockCustomerQuestions.find(q => q.id === questionId);
+            if (question) {
+                editingQuestion = question;
+                
+                // Populate form fields
+                document.getElementById('questionName').value = question.name;
+                document.getElementById('questionCategory').value = question.categoryId;
+                document.getElementById('questionRequired').checked = question.required;
+                document.getElementById('deliveryText').value = question.deliveryText;
+                document.getElementById('returnText').value = question.returnText;
+                document.getElementById('syncTexts').checked = question.syncTexts;
+                
+                // Load answer pairs
+                const maxLength = Math.max(question.deliveryAnswers.length, question.returnAnswers.length);
+                formAnswerPairs = [];
+                
+                for (let i = 0; i < maxLength; i++) {
+                    const deliveryAnswer = question.deliveryAnswers[i] || { description: '', dollarValue: 0 };
+                    const returnAnswer = question.returnAnswers[i] || { description: '', dollarValue: 0 };
+                    const isSync = question.answerSyncMap[i] || false;
+                    
+                    formAnswerPairs.push({
+                        delivery: deliveryAnswer,
+                        return: returnAnswer,
+                        isSync: isSync
+                    });
+                }
+                
+                document.getElementById('customerQuestionModal').classList.remove('hidden');
+                document.getElementById('modalTitle').textContent = 'Edit Customer Question';
+                this.renderAnswerPairs();
+            }
+        },
+
+        deleteQuestion: function(questionId) {
+            if (confirm('Are you sure you want to delete this customer question?')) {
+                // In a real Laravel app, send DELETE request
+                console.log('Deleting question:', questionId);
+                this.showSuccessMessage('Customer question deleted successfully!');
+                // You would reload the page or remove the element here
+            }
+        },
+
+        closeQuestionModal: function() {
+            document.getElementById('customerQuestionModal').classList.add('hidden');
+            this.resetQuestionForm();
+        },
+
+        resetQuestionForm: function() {
+            document.getElementById('customerQuestionForm').reset();
+            document.getElementById('questionRequired').checked = false;
+            document.getElementById('syncTexts').checked = true;
+            formAnswerPairs = [{ delivery: { description: '', dollarValue: 0 }, return: { description: '', dollarValue: 0 }, isSync: true }];
+            editingQuestion = null;
+        },
+
+        // Answer pair management
+        addAnswerPair: function() {
+            formAnswerPairs.push({
+                delivery: { description: '', dollarValue: 0 },
+                return: { description: '', dollarValue: 0 },
+                isSync: true
+            });
+            this.renderAnswerPairs();
+        },
+
+        removeAnswerPair: function(index) {
+            if (formAnswerPairs.length > 1) {
+                formAnswerPairs.splice(index, 1);
+                this.renderAnswerPairs();
+            }
+        },
+
+        toggleAnswerSync: function(index) {
+            formAnswerPairs[index].isSync = !formAnswerPairs[index].isSync;
+            if (formAnswerPairs[index].isSync) {
+                formAnswerPairs[index].return.description = formAnswerPairs[index].delivery.description;
+            }
+            this.renderAnswerPairs();
+        },
+
+        updateDeliveryAnswer: function(index, field, value) {
+            formAnswerPairs[index].delivery[field] = field === 'dollarValue' ? parseFloat(value) || 0 : value;
+            
+            // Auto-sync if enabled
+            if (formAnswerPairs[index].isSync && field === 'description') {
+                formAnswerPairs[index].return.description = value;
+            }
+            
+            this.renderAnswerPairs();
+        },
+
+        updateReturnAnswer: function(index, field, value) {
+            if (!formAnswerPairs[index].isSync || field !== 'description') {
+                formAnswerPairs[index].return[field] = field === 'dollarValue' ? parseFloat(value) || 0 : value;
+                this.renderAnswerPairs();
+            }
+        },
+
+        calculateCost: function(deliveryValue, returnValue) {
+            return returnValue - deliveryValue;
+        },
+
+        renderAnswerPairs: function() {
+            const container = document.getElementById('answerPairsContainer');
+            if (!container) return;
+            
+            container.innerHTML = formAnswerPairs.map((pair, index) => {
+                const cost = this.calculateCost(pair.delivery.dollarValue, pair.return.dollarValue);
+                
+                return `
+                    <div class="border border-gray-200 rounded-lg p-4 bg-white">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-sm font-medium text-gray-700">Answer ${index + 1}</span>
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-2">
+                                    <input
+                                        type="checkbox"
+                                        ${pair.isSync ? 'checked' : ''}
+                                        onchange="CustomerQuestions.toggleAnswerSync(${index})"
+                                        class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                    />
+                                    <label class="text-xs text-gray-600 flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                                        </svg>
+                                        Sync
+                                    </label>
+                                </div>
+                                <div class="flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded text-xs border border-yellow-200">
+                                    <span class="text-gray-600">Charge:</span>
+                                    <span class="font-medium ${cost > 0 ? 'text-red-600' : cost < 0 ? 'text-green-600' : 'text-gray-600'}">
+                                        $${cost}
+                                    </span>
+                                </div>
+                                ${formAnswerPairs.length > 1 ? `
+                                    <button
+                                        type="button"
+                                        onclick="CustomerQuestions.removeAnswerPair(${index})"
+                                        class="p-1 text-red-600 hover:bg-red-50 rounded"
+                                    >
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <!-- Delivery Answer -->
+                            <div class="border border-blue-200 rounded-lg p-3 bg-blue-50">
+                                <label class="block text-sm font-medium text-blue-900 mb-2">📤 Delivery</label>
+                                <div class="flex items-center gap-2">
+                                    <input
+                                        type="text"
+                                        value="${pair.delivery.description}"
+                                        oninput="CustomerQuestions.updateDeliveryAnswer(${index}, 'description', this.value)"
+                                        placeholder="Answer description..."
+                                        class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        required
+                                    />
+                                    <div class="flex items-center gap-1 bg-white px-2 py-2 rounded-md border border-gray-300">
+                                        <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                        </svg>
+                                        <input
+                                            type="number"
+                                            value="${pair.delivery.dollarValue}"
+                                            oninput="CustomerQuestions.updateDeliveryAnswer(${index}, 'dollarValue', this.value)"
+                                            placeholder="0"
+                                            class="w-16 border-0 focus:ring-0 p-0 text-sm"
+                                            min="0"
+                                            step="0.01"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Return Answer -->
+                            <div class="border border-green-200 rounded-lg p-3 bg-green-50">
+                                <label class="block text-sm font-medium text-green-900 mb-2">
+                                    📥 Return ${pair.isSync ? '<span class="text-xs">(Synced)</span>' : ''}
+                                </label>
+                                <div class="flex items-center gap-2">
+                                    <input
+                                        type="text"
+                                        value="${pair.return.description}"
+                                        oninput="CustomerQuestions.updateReturnAnswer(${index}, 'description', this.value)"
+                                        placeholder="Answer description..."
+                                        class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        ${pair.isSync ? 'disabled' : ''}
+                                        required
+                                    />
+                                    <div class="flex items-center gap-1 bg-white px-2 py-2 rounded-md border border-gray-300">
+                                        <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                        </svg>
+                                        <input
+                                            type="number"
+                                            value="${pair.return.dollarValue}"
+                                            oninput="CustomerQuestions.updateReturnAnswer(${index}, 'dollarValue', this.value)"
+                                            placeholder="0"
+                                            class="w-16 border-0 focus:ring-0 p-0 text-sm"
+                                            min="0"
+                                            step="0.01"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        },
+
+        handleTextSync: function() {
+            const syncTexts = document.getElementById('syncTexts').checked;
+            const deliveryText = document.getElementById('deliveryText').value;
+            const returnTextInput = document.getElementById('returnText');
+            
+            if (syncTexts && deliveryText) {
+                returnTextInput.value = deliveryText.replace('Delivered', 'Returned').replace('delivered', 'returned');
+                returnTextInput.disabled = true;
+            } else {
+                returnTextInput.disabled = false;
+            }
+        },
+
+        saveQuestion: function() {
+            const name = document.getElementById('questionName').value.trim();
+            const categoryId = document.getElementById('questionCategory').value;
+            const required = document.getElementById('questionRequired').checked;
+            const deliveryText = document.getElementById('deliveryText').value.trim();
+            const returnText = document.getElementById('returnText').value.trim();
+            const syncTexts = document.getElementById('syncTexts').checked;
+
+            if (!name || !categoryId || !deliveryText || !returnText) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            if (formAnswerPairs.length === 0 || formAnswerPairs.some(pair => !pair.delivery.description.trim() || !pair.return.description.trim())) {
+                alert('Please complete all answer pairs');
+                return;
+            }
+
+            // Create answer sync map
+            const answerSyncMap = {};
+            formAnswerPairs.forEach((pair, index) => {
+                answerSyncMap[index] = pair.isSync;
+            });
+
+            const questionData = {
+                id: editingQuestion ? editingQuestion.id : `cq-${Date.now()}`,
+                name: name,
+                categoryId: categoryId,
+                required: required,
+                deliveryText: deliveryText,
+                returnText: returnText,
+                syncTexts: syncTexts,
+                deliveryAnswers: formAnswerPairs.map((pair, index) => ({
+                    id: `cans-d-${Date.now()}-${index}`,
+                    description: pair.delivery.description,
+                    dollarValue: pair.delivery.dollarValue,
+                    sortOrder: index + 1
+                })),
+                returnAnswers: formAnswerPairs.map((pair, index) => ({
+                    id: `cans-r-${Date.now()}-${index}`,
+                    description: pair.return.description,
+                    dollarValue: pair.return.dollarValue,
+                    sortOrder: index + 1
+                })),
+                answerSyncMap: answerSyncMap
+            };
+
+            if (editingQuestion) {
+                // Update existing question in mock data
+                const index = mockCustomerQuestions.findIndex(q => q.id === editingQuestion.id);
+                if (index > -1) {
+                    mockCustomerQuestions[index] = { ...mockCustomerQuestions[index], ...questionData };
+                }
+                this.showSuccessMessage('Customer question updated successfully!');
+            } else {
+                // Add new question to mock data
+                mockCustomerQuestions.push(questionData);
+                this.showSuccessMessage('Customer question created successfully!');
+            }
+
+            this.closeQuestionModal();
+            // In a real app, you would reload the page or update the DOM
+        },
+
+        showSuccessMessage: function(message) {
+            // Create or update success message element
+            let successDiv = document.getElementById('customerQuestionSuccess');
+            if (!successDiv) {
+                successDiv = document.createElement('div');
+                successDiv.id = 'customerQuestionSuccess';
+                successDiv.className = 'bg-green-50 border border-green-200 rounded-lg p-4 mb-6';
+                successDiv.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-green-800 font-medium">${message}</span>
+                    </div>
+                `;
+                document.body.insertBefore(successDiv, document.body.firstChild);
+            } else {
+                successDiv.querySelector('span').textContent = message;
+                successDiv.classList.remove('hidden');
+            }
+            
+            // Hide after 3 seconds
+</script>
+
+<!-- Add New Customer Question Modal -->
+<div id="customerQuestionModal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal-backdrop flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-xl shadow-xl max-w-7xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 id="modalTitle" class="text-xl font-semibold text-gray-900">New Customer Question</h3>
+                <button
+                    onclick="CustomerQuestions.closeQuestionModal()"
+                    class="p-2 text-gray-400 hover:text-gray-600 rounded-lg"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <form id="customerQuestionForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Question Name *
+                        </label>
+                        <input
+                            type="text"
+                            id="questionName"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            placeholder="e.g., Equipment Keys"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Category *
+                        </label>
+                        <select
+                            id="questionCategory"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            required
+                        >
+                            <option value="">Select Category</option>
+                            <option value="ccat-keys">Keys & Access</option>
+                            <option value="ccat-manuals">Manuals & Documentation</option>
+                            <option value="ccat-attachments">Attachments & Accessories</option>
+                            <option value="ccat-condition">Physical Condition</option>
+                            <option value="ccat-fluids">Fluids & Fuel</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Text Fields with Sync -->
+                <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <div class="flex items-center gap-2 mb-4">
+                        <input
+                            type="checkbox"
+                            id="syncTexts"
+                            checked
+                            onchange="CustomerQuestions.handleTextSync()"
+                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <label for="syncTexts" class="text-sm font-medium text-gray-700 flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                            </svg>
+                            Sync Delivery & Return Text
+                        </label>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                📤 Delivery Text *
+                            </label>
+                            <input
+                                type="text"
+                                id="deliveryText"
+                                oninput="CustomerQuestions.handleTextSync()"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                placeholder="e.g., Keys Delivered"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                📥 Return Text *
+                            </label>
+                            <input
+                                type="text"
+                                id="returnText"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                placeholder="e.g., Keys Returned"
+                                required
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <input
+                        type="checkbox"
+                        id="questionRequired"
+                        class="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                    />
+                    <label for="questionRequired" class="text-sm font-medium text-gray-700">
+                        Required Question
+                    </label>
+                </div>
+
+                <!-- Answer Options with Individual Sync -->
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h4 class="text-lg font-medium text-gray-900">Answer Options</h4>
+                            <p class="text-sm text-gray-600">Customer Charge = Return Value - Delivery Value</p>
+                        </div>
+                        <button
+                            type="button"
+                            onclick="CustomerQuestions.addAnswerPair()"
+                            class="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                        >
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            Add Answer Pair
+                        </button>
+                    </div>
+
+                    <div id="answerPairsContainer" class="space-y-4">
+                        <!-- Answer pairs will be rendered here by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 pt-6 border-t border-gray-200">
+                    <button
+                        type="button"
+                        onclick="CustomerQuestions.saveQuestion()"
+                        class="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12"></path>
+                        </svg>
+                        Save Customer Question
+                    </button>
+                    <button
+                        type="button"
+                        onclick="CustomerQuestions.closeQuestionModal()"
+                        class="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+                name: 'Equipment Keys',
                 // Hide answers
                 answersDiv.classList.add('hidden');
                 chevronIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
